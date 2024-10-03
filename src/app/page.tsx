@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
 import { Button } from "./components/ui/button"
 import { Input } from "./components/ui/input"
 import { Textarea } from "./components/ui/textarea"
@@ -16,23 +16,44 @@ interface Meal {
 
 export default function MealTracker() {
   const [meals, setMeals] = useState<Meal[]>([])
-  const [newMeal, setNewMeal] = useState<Omit<Meal, 'id'>>({
+  const [newMeal, setNewMeal] = useState<Omit<Meal, '_id'>>({
     name: '',
     description: '',
     notes: '',
     recipe: ''
   })
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    fetchMeals()
+  }, [])
+
+  const fetchMeals = async () => {
+    setIsLoading(true)
+    const response = await fetch('/api/meals')
+    const data = await response.json()
+    setMeals(data.data)
+    setIsLoading(false)
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setNewMeal(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setMeals(prev => [...prev, { ...newMeal, id: Date.now() }])
-    setNewMeal({ name: '', description: '', notes: '', recipe: '' })
+    const response = await fetch('/api/meals', {
+      method: 'POST',
+      body: JSON.stringify(newMeal)
+    })
+    if (response.ok) {
+      setNewMeal({ name: '', description: '', notes: '', recipe: '' })
+      fetchMeals()
+    }
   }
+  
+  
 
   return (
       <div className="container mx-auto p-4">
