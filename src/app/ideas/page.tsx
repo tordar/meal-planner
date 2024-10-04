@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { DataTable } from "@/components/DataTable"
 import { DataForm } from "@/components/DataForm"
+import { SearchBar } from "@/components/SearchBar"
 import { useDataManager } from "@/hooks/useDataManager"
-import {SearchBar} from "@/components/SearchBar";
 
 interface Idea {
     _id: string;
@@ -23,10 +23,10 @@ const ideaFields = [
 ]
 
 const ideaColumns = [
-    { key: 'name', header: 'Name' },
-    { key: 'description', header: 'Description' },
-    { key: 'notes', header: 'Notes' },
-    { key: 'recipe', header: 'Recipe' }
+    { key: 'name', header: 'Name', width: '25%' },
+    { key: 'description', header: 'Description', width: '25%' },
+    { key: 'notes', header: 'Notes', width: '25%' },
+    { key: 'recipe', header: 'Recipe', width: '25%' }
 ]
 
 export default function IdeaTracker() {
@@ -70,7 +70,7 @@ export default function IdeaTracker() {
             </Dialog>
 
             {isLoading ? (
-                <p>Loading Ideas...</p>
+                <p>Loading ideas...</p>
             ) : (
                 <DataTable
                     data={ideas}

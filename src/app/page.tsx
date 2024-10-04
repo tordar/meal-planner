@@ -25,11 +25,11 @@ const mealFields = [
 ]
 
 const mealColumns = [
-  { key: 'name', header: 'Name' },
-  { key: 'description', header: 'Description' },
-  { key: 'notes', header: 'Notes' },
-  { key: 'recipe', header: 'Recipe' },
-  { key: 'time', header: 'Time' },
+  { key: 'name', header: 'Name', width: '20%' },
+  { key: 'description', header: 'Description', width: '25%' },
+  { key: 'notes', header: 'Notes', width: '20%' },
+  { key: 'recipe', header: 'Recipe', width: '25%' },
+  { key: 'time', header: 'Time', width: '10%' },
 ]
 
 export default function MealTracker() {
