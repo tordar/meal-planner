@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 
 export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     const [data, setData] = useState<T[]>([])
@@ -38,9 +38,9 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
         if (editingItem) {
-            setEditingItem(prev => ({ ...prev, [name]: value }))
+            setEditingItem(prev => ({ ...prev, [name]: value } as T))
         } else {
-            setNewItem(prev => ({ ...prev, [name]: value }))
+            setNewItem(prev => ({ ...prev, [name]: value } as Omit<T, '_id'>))
         }
     }
 

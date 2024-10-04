@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import clientPromise from '../../lib/mongodb'
 import { ObjectId } from 'mongodb'
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     const client = await clientPromise
     const db = client.db("mealtracker")
     const meals = await db.collection("sides").find({}).toArray()

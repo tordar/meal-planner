@@ -24,7 +24,7 @@ const mealFields = [
   { name: 'time', label: 'Time', type: 'text' as const },
 ]
 
-const mealColumns = [
+const mealColumns: Array<{key: keyof Meal; header: string; width: string}> = [
   { key: 'name', header: 'Name', width: '20%' },
   { key: 'description', header: 'Description', width: '25%' },
   { key: 'notes', header: 'Notes', width: '20%' },

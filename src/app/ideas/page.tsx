@@ -22,7 +22,7 @@ const ideaFields = [
     { name: 'recipe', label: 'Recipe', type: 'textarea' as const }
 ]
 
-const ideaColumns = [
+const ideaColumns: Array<{key: keyof Idea; header: string; width: string}> = [
     { key: 'name', header: 'Name', width: '25%' },
     { key: 'description', header: 'Description', width: '25%' },
     { key: 'notes', header: 'Notes', width: '25%' },
