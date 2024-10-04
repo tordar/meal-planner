@@ -1,17 +1,9 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
+import './globals.css'
+import { Inter } from 'next/font/google'
+import Link from 'next/link'
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,11 +17,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <body className={inter.className}>
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar */}
+      <div className="w-64 bg-white shadow-md">
+        <div className="p-4">
+          <h1 className="text-2xl font-semibold text-gray-800">Food Planner</h1>
+        </div>
+        <nav className="mt-4">
+          <Link href="/" className="block py-2 px-4 text-gray-700 hover:bg-gray-200">Meals</Link>
+          <Link href="/ideas" className="block py-2 px-4 text-gray-700 hover:bg-gray-200">Ideas</Link>
+          <Link href="/sides" className="block py-2 px-4 text-gray-700 hover:bg-gray-200">Sides</Link>
+        </nav>
+      </div>
+
+      {/* Main content */}
+      <div className="flex-1 overflow-auto">
         {children}
-      </body>
+      </div>
+    </div>
+    </body>
     </html>
-  );
+  )
 }
