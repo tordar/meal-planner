@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import './globals.css'
 import { Inter } from 'next/font/google'
-import Link from 'next/link'
+import { NavLink } from '@/components/NavLink'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,9 +25,9 @@ export default function RootLayout({
           <h1 className="text-2xl font-semibold text-gray-800">Food Planner</h1>
         </div>
         <nav className="mt-4">
-          <Link href="/" className="block py-2 px-4 text-gray-700 hover:bg-gray-200">Meals</Link>
-          <Link href="/ideas" className="block py-2 px-4 text-gray-700 hover:bg-gray-200">Ideas</Link>
-          <Link href="/sides" className="block py-2 px-4 text-gray-700 hover:bg-gray-200">Sides</Link>
+          <NavLink href="/" className="block py-2 px-4 text-gray-700 hover:bg-gray-200">Meals</NavLink>
+          <NavLink href="/ideas" className="block py-2 px-4 text-gray-700 hover:bg-gray-200">Ideas</NavLink>
+          <NavLink href="/sides" className="block py-2 px-4 text-gray-700 hover:bg-gray-200">Sides</NavLink>
         </nav>
       </div>
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     const [data, setData] = useState<T[]>([])
@@ -8,6 +8,7 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     const [isLoading, setIsLoading] = useState(true)
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState('')
+    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
         fetchData()
@@ -28,40 +29,66 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
 
     const fetchData = async () => {
         setIsLoading(true)
-        const response = await fetch(apiEndpoint)
-        const responseData = await response.json()
-        setData(responseData.data)
-        setFilteredData(responseData.data)
-        setIsLoading(false)
+        try {
+            const response = await fetch(apiEndpoint)
+            if (!response.ok) {
+                throw new Error('Failed to fetch data')
+            }
+            const responseData = await response.json()
+            setData(responseData.data)
+            setFilteredData(responseData.data)
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'An error occurred while fetching data')
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
         if (editingItem) {
-            setEditingItem(prev => ({ ...prev, [name]: value } as T))
+            setEditingItem(prev => ({ ...prev, [name]: value }))
         } else {
-            setNewItem(prev => ({ ...prev, [name]: value } as Omit<T, '_id'>))
+            setNewItem(prev => ({ ...prev, [name]: value }))
         }
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        const method = editingItem ? 'PUT' : 'POST'
-        const body = editingItem ? JSON.stringify(editingItem) : JSON.stringify(newItem)
+        setError(null)
+        try {
+            if (editingItem) {
+                const response = await fetch(`${apiEndpoint}/${editingItem._id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(editingItem)
+                })
 
-        const response = await fetch(apiEndpoint, {
-            method,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body
-        })
+                if (!response.ok) {
+                    throw new Error('Failed to update item')
+                }
+            } else {
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newItem)
+                })
 
-        if (response.ok) {
+                if (!response.ok) {
+                    throw new Error('Failed to create item')
+                }
+            }
+
             setNewItem({} as Omit<T, '_id'>)
             setEditingItem(null)
-            fetchData()
+            await fetchData()
             setIsDialogOpen(false)
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'An error occurred while submitting data')
         }
     }
 
@@ -71,17 +98,49 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     }
 
     const handleDelete = async (id: string) => {
-        const response = await fetch(`${apiEndpoint}?id=${id}`, {
-            method: 'DELETE',
-        })
+        setError(null)
+        try {
+            const response = await fetch(`${apiEndpoint}/${id}`, {
+                method: 'DELETE',
+            })
 
-        if (response.ok) {
-            fetchData()
+            if (!response.ok) {
+                throw new Error('Failed to delete item')
+            }
+
+            await fetchData()
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'An error occurred while deleting the item')
         }
     }
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value)
+    }
+
+    const handleImport = async (importedData: Omit<T, '_id'>[]) => {
+        setIsLoading(true)
+        setError(null)
+        try {
+            const response = await fetch(`${apiEndpoint}/bulk`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(importedData)
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.error || 'Failed to import data')
+            }
+
+            await fetchData()
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'An error occurred during import')
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return {
@@ -91,11 +150,13 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
         isLoading,
         isDialogOpen,
         searchTerm,
+        error,
         setIsDialogOpen,
         handleInputChange,
         handleSubmit,
         handleEdit,
         handleDelete,
-        handleSearch
+        handleSearch,
+        handleImport
     }
 }

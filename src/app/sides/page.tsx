@@ -47,13 +47,15 @@ export default function SideTracker() {
 
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Side Tracker</h1>
+            <h1 className="text-2xl font-bold mb-4">Meal Tracker</h1>
 
-            <SearchBar value={searchTerm} onChange={handleSearch} />
-
+            <div className="flex justify-between items-center mb-4">
+                <div className="w-2/3">
+                    <SearchBar value={searchTerm} onChange={handleSearch} />
+                </div>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                    <Button className="mb-4">Add New Side</Button>
+                    <Button>Add New Side</Button>
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
@@ -68,7 +70,7 @@ export default function SideTracker() {
                     />
                 </DialogContent>
             </Dialog>
-
+            </div>
             {isLoading ? (
                 <p>Loading sides...</p>
             ) : (
