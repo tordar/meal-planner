@@ -6,6 +6,7 @@ import { DataTable } from "@/components/DataTable"
 import { DataForm } from "@/components/DataForm"
 import { SearchBar } from "@/components/SearchBar"
 import { useDataManager } from "@/hooks/useDataManager"
+import {CSVImport} from "@/components/CsvImport";
 
 interface Sides {
     _id: string;
@@ -42,7 +43,8 @@ export default function SideTracker() {
         handleSubmit,
         handleEdit,
         handleDelete,
-        handleSearch
+        handleSearch,
+        handleImport
     } = useDataManager<Sides>('/api/sides')
 
     return (
@@ -53,6 +55,8 @@ export default function SideTracker() {
                 <div className="w-2/3">
                     <SearchBar value={searchTerm} onChange={handleSearch} />
                 </div>
+                <div className="flex gap-2">
+                    <CSVImport onImport={handleImport} fields={sideFields.map(field => field.name)} />
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
                     <Button>Add New Side</Button>
@@ -70,6 +74,7 @@ export default function SideTracker() {
                     />
                 </DialogContent>
             </Dialog>
+                </div>
             </div>
             {isLoading ? (
                 <p>Loading sides...</p>
@@ -82,5 +87,6 @@ export default function SideTracker() {
                 />
             )}
         </div>
+            
     )
 }

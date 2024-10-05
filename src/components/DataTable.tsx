@@ -36,8 +36,8 @@ export function DataTable<T extends { _id: string }>({ data, columns, onEdit, on
                             {columns.map((column) => (
                                 <TableCell
                                     key={`${item._id}-${column.key as string}`}
-                                    style={{ width: column.width }}
-                                    className="whitespace-normal break-words"
+                                    style={{ maxWidth: column.width }}
+                                    className="whitespace-normal break-normal overflow-wrap"
                                 >
                                     {item[column.key] as React.ReactNode}
                                 </TableCell>

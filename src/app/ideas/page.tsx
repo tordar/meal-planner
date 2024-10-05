@@ -6,6 +6,7 @@ import { DataTable } from "@/components/DataTable"
 import { DataForm } from "@/components/DataForm"
 import { SearchBar } from "@/components/SearchBar"
 import { useDataManager } from "@/hooks/useDataManager"
+import {CSVImport} from "@/components/CsvImport";
 
 interface Idea {
     _id: string;
@@ -42,7 +43,8 @@ export default function IdeaTracker() {
         handleSubmit,
         handleEdit,
         handleDelete,
-        handleSearch
+        handleSearch,
+        handleImport
     } = useDataManager<Idea>('/api/ideas')
 
     return (
@@ -53,6 +55,8 @@ export default function IdeaTracker() {
                 <div className="w-2/3">
                     <SearchBar value={searchTerm} onChange={handleSearch} />
                 </div>
+                <div className="flex gap-2">
+                    <CSVImport onImport={handleImport} fields={ideaFields.map(field => field.name)} />
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
                     <Button>Add New Idea</Button>
@@ -70,6 +74,7 @@ export default function IdeaTracker() {
                     />
                 </DialogContent>
             </Dialog>
+            </div>
             </div>
             {isLoading ? (
                 <p>Loading ideas...</p>
