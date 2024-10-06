@@ -48,45 +48,60 @@ export default function SideTracker() {
     } = useDataManager<Sides>('/api/sides')
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Meal Tracker</h1>
-
-            <div className="flex justify-between items-center mb-4">
-                <div className="w-2/3">
-                    <SearchBar value={searchTerm} onChange={handleSearch} />
-                </div>
-                <div className="flex gap-2">
-                    <CSVImport onImport={handleImport} fields={sideFields.map(field => field.name)} />
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                    <Button>Add New Side</Button>
-                </DialogTrigger>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>{editingItem ? 'Edit Side' : 'Add New Side'}</DialogTitle>
-                    </DialogHeader>
-                    <DataForm
-                        fields={sideFields}
-                        values={editingItem || newSide}
-                        onChange={handleInputChange}
-                        onSubmit={handleSubmit}
-                        submitLabel={editingItem ? 'Update Side' : 'Add Side'}
-                    />
-                </DialogContent>
-            </Dialog>
+        <div className="container bg-gray-100 mx-auto p-4">
+            <div className="flex justify-between items-center mb-6">
+                <SearchBar
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    placeholder="Search sides..."
+                />
+                <div className="flex space-x-4 text-sm text-gray-600">
+                    <span>Sides: {sides.length}</span>
                 </div>
             </div>
-            {isLoading ? (
-                <p>Loading sides...</p>
-            ) : (
-                <DataTable
-                    data={sides}
-                    columns={sideColumns}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                />
-            )}
+            <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div className="flex justify-between items-center mb-4 m-4">
+                    <h1 className="text-2xl font-bold mb-4">Sides Tracker</h1>
+
+                    <div className="flex justify-between items-center mb-4">
+                        <div className="flex gap-2">
+                            <CSVImport onImport={handleImport} fields={sideFields.map(field => field.name)}/>
+                            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                <DialogTrigger asChild>
+                                    <Button>Add New Side</Button>
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>{editingItem ? 'Edit Side' : 'Add New Side'}</DialogTitle>
+                                    </DialogHeader>
+                                    <DataForm
+                                        fields={sideFields}
+                                        values={editingItem || newSide}
+                                        onChange={handleInputChange}
+                                        onSubmit={handleSubmit}
+                                        submitLabel={editingItem ? 'Update Side' : 'Add Side'}
+                                    />
+                                </DialogContent>
+                            </Dialog>
+                        </div>
+                    </div>
+                </div>
+
+
+                {isLoading ? (
+                    <div className="p-6">
+                        <p>Loading meals...</p>
+                    </div>
+                ) : (
+                    <DataTable
+                        data={sides}
+                        columns={sideColumns}
+                        onEdit={handleEdit}
+                        onDelete={(id) => handleDelete(id)}
+                    />
+                )}
+            </div>
         </div>
-            
+
     )
 }
