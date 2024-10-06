@@ -18,7 +18,7 @@ interface DataTableProps<T> {
 
 export function DataTable<T extends { _id: string }>({ data, columns, onEdit, onDelete }: DataTableProps<T>) {
     return (
-        <div className="overflow-x-auto">
+        <div className="overflow-auto max-h-[calc(100vh-16rem)]">
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -37,7 +37,7 @@ export function DataTable<T extends { _id: string }>({ data, columns, onEdit, on
                                 <TableCell
                                     key={`${item._id}-${column.key as string}`}
                                     style={{ maxWidth: column.width }}
-                                    className="whitespace-normal break-normal overflow-wrap"
+                                    className="whitespace-normal break-words"
                                 >
                                     {item[column.key] as React.ReactNode}
                                 </TableCell>

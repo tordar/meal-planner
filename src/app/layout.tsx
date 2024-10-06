@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { NavLink } from '@/components/NavLink'
-import { Home, Utensils, Book, Coffee, FileText, User, Layout as LayoutIcon, FileQuestion } from 'lucide-react'
+import { Utensils, Book, Coffee, FileQuestion } from 'lucide-react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,11 +19,11 @@ export default function RootLayout({
     return (
         <html lang="en" className="h-full">
         <body className={`${inter.className} flex h-full`}>
-        <div className="flex h-screen bg-gray-100 ">
+        <div className="flex w-full h-full bg-gray-100">
             {/* Sidebar */}
-            <div className="w-64 flex flex-col">
+            <div className="w-64 flex flex-col shadow-md">
                 {/* Logo */}
-                <div className="p-4 flex items-center">
+                <div className="p-4 flex items-center border-b">
                     <span className="text-xl font-semibold">Food Planner</span>
                 </div>
 
@@ -35,7 +35,7 @@ export default function RootLayout({
                 </nav>
 
                 {/* Resources Section */}
-                <div className="mt-auto p-4 border-t border-gray-700">
+                <div className="mt-auto p-4 border-t">
                     <NavItem href="/docs" icon={<FileQuestion size={20} />} label="Documentation" />
                 </div>
             </div>
@@ -44,9 +44,7 @@ export default function RootLayout({
             <div className="flex-1 flex flex-col overflow-hidden">
                 {/* Page Content */}
                 <main className="flex-1 overflow-auto bg-gray-100 p-6">
-                    <div className="rounded-lg shadow-sm p-6">
                         {children}
-                    </div>
                 </main>
             </div>
         </div>
@@ -57,7 +55,7 @@ export default function RootLayout({
 
 function NavItem({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
     return (
-        <NavLink href={href} className="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-800">
+        <NavLink href={href} className="flex items-center py-2 px-4 text-gray-700 hover:bg-gray-100">
             <span className="inline-flex items-center justify-center w-6 h-6 mr-3">
                 {icon}
             </span>

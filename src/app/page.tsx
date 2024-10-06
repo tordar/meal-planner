@@ -66,30 +66,30 @@ export default function MealTracker() {
 
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <div className="flex justify-between items-center mb-4 m-4">
-          <h1 className="text-2xl font-bold mb-4">Meal Tracker</h1>
+            <h1 className="text-2xl font-bold mb-4">Meal Tracker</h1>
 
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex gap-2">
-              <CSVImport onImport={handleImport} fields={mealFields.map(field => field.name)}/>
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button>Add New Meal</Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>{editingItem ? 'Edit Meal' : 'Add New Meal'}</DialogTitle>
-                  </DialogHeader>
-                  <DataForm
-                      fields={mealFields}
-                      values={editingItem || newMeal}
-                      onChange={handleInputChange}
-                      onSubmit={handleSubmit}
-                      submitLabel={editingItem ? 'Update Meal' : 'Add Meal'}
-                  />
-                </DialogContent>
-              </Dialog>
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex gap-2">
+                <CSVImport onImport={handleImport} fields={mealFields.map(field => field.name)}/>
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button>Add New Meal</Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>{editingItem ? 'Edit Meal' : 'Add New Meal'}</DialogTitle>
+                    </DialogHeader>
+                    <DataForm
+                        fields={mealFields}
+                        values={editingItem || newMeal}
+                        onChange={handleInputChange}
+                        onSubmit={handleSubmit}
+                        submitLabel={editingItem ? 'Update Meal' : 'Add Meal'}
+                    />
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
-          </div>
           </div>
 
 
