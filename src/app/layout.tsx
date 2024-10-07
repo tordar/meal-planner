@@ -18,12 +18,12 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" className="h-full">
-        <body className={`${inter.className} flex h-full`}>
-        <div className="flex w-full h-full bg-gray-100">
+        <body className={`${inter.className} h-full`}>
+        <div className="flex h-full">
             {/* Sidebar */}
-            <div className="w-64 flex flex-col shadow-md">
+            <div className="w-64 shadow-md flex flex-col bg-gray-100">
                 {/* Logo */}
-                <div className="p-4 flex items-center border-b">
+                <div className="p-4 border-b">
                     <span className="text-xl font-semibold">Food Planner</span>
                 </div>
 
@@ -34,18 +34,11 @@ export default function RootLayout({
                     <NavItem href="/ideas" icon={<Coffee size={20} />} label="Ideas" />
                 </nav>
 
-                {/* Resources Section */}
-                <div className="mt-auto p-4 border-t">
-                    <NavItem href="/docs" icon={<FileQuestion size={20} />} label="Documentation" />
-                </div>
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col overflow-hidden">
-                {/* Page Content */}
-                <main className="flex-1 overflow-auto bg-gray-100 p-6">
-                        {children}
-                </main>
+            <div className="flex-1 overflow-hidden">
+                {children}
             </div>
         </div>
         </body>

@@ -48,60 +48,61 @@ export default function IdeaTracker() {
     } = useDataManager<Idea>('/api/ideas')
 
     return (
-        <div className="container bg-gray-100 mx-auto p-4">
-            <div className="flex justify-between items-center mb-6">
-                <SearchBar
-                    value={searchTerm}
-                    onChange={handleSearch}
-                    placeholder="Search ideas..."
-                />
-                <div className="flex space-x-4 text-sm text-gray-600">
-                    <span>Ideas: {ideas.length}</span>
-                </div>
-            </div>
-            <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-                <div className="flex justify-between items-center mb-4 m-4">
-                    <h1 className="text-2xl font-bold mb-4">Ideas Tracker</h1>
-
-                    <div className="flex justify-between items-center mb-4">
-                        <div className="flex gap-2">
-                            <CSVImport onImport={handleImport} fields={ideaFields.map(field => field.name)}/>
-                            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                                <DialogTrigger asChild>
-                                    <Button>Add New Idea</Button>
-                                </DialogTrigger>
-                                <DialogContent>
-                                    <DialogHeader>
-                                        <DialogTitle>{editingItem ? 'Edit Idea' : 'Add New Idea'}</DialogTitle>
-                                    </DialogHeader>
-                                    <DataForm
-                                        fields={ideaFields}
-                                        values={editingItem || newIdea}
-                                        onChange={handleInputChange}
-                                        onSubmit={handleSubmit}
-                                        submitLabel={editingItem ? 'Update Idea' : 'Add Idea'}
-                                    />
-                                </DialogContent>
-                            </Dialog>
-                        </div>
-                    </div>
-                </div>
-
-
-                {isLoading ? (
-                    <div className="p-6">
-                        <p>Loading meals...</p>
-                    </div>
-                ) : (
-                    <DataTable
-                        data={ideas}
-                        columns={ideaColumns}
-                        onEdit={handleEdit}
-                        onDelete={(id) => handleDelete(id)}
+        <div className="h-full flex flex-col bg-gray-100">
+            <div className="p-6 flex flex-col h-full">
+                <div className="flex justify-between items-center mb-6">
+                    <SearchBar
+                        value={searchTerm}
+                        onChange={handleSearch}
+                        placeholder="Search ideas..."
                     />
-                )}
+                    <div className="flex space-x-4 text-sm text-gray-600">
+                        <span>Ideas: {ideas.length}</span>
+                    </div>
+                </div>
+                
+                <div className="bg-white rounded-lg shadow-sm flex flex-col flex-grow overflow-hidden">
+                    <div className="flex justify-between items-center p-4 border-b">
+                        <h1 className="text-2xl font-bold">Ideas Tracker</h1>
+                        
+                            <div className="flex gap-2">
+                                <CSVImport onImport={handleImport} fields={ideaFields.map(field => field.name)}/>
+                                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                    <DialogTrigger asChild>
+                                        <Button>Add New Idea</Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>{editingItem ? 'Edit Idea' : 'Add New Idea'}</DialogTitle>
+                                        </DialogHeader>
+                                        <DataForm
+                                            fields={ideaFields}
+                                            values={editingItem || newIdea}
+                                            onChange={handleInputChange}
+                                            onSubmit={handleSubmit}
+                                            submitLabel={editingItem ? 'Update Idea' : 'Add Idea'}
+                                        />
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
+                    </div>
+
+                    <div className="flex-grow overflow-auto">
+                    {isLoading ? (
+                        <div className="p-6">
+                            <p>Loading ideas...</p>
+                        </div>
+                    ) : (
+                        <DataTable
+                            data={ideas}
+                            columns={ideaColumns}
+                            onEdit={handleEdit}
+                            onDelete={(id) => handleDelete(id)}
+                        />
+                    )}
+                    </div>
+                </div>
             </div>
         </div>
-
     )
 }

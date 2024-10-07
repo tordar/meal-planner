@@ -18,12 +18,12 @@ interface DataTableProps<T> {
 
 export function DataTable<T extends { _id: string }>({ data, columns, onEdit, onDelete }: DataTableProps<T>) {
     return (
-        <div className="overflow-auto max-h-[calc(100vh-16rem)]">
+        <div className="relative">
             <Table>
-                <TableHeader>
+                <TableHeader className="sticky top-0 bg-white z-10">
                     <TableRow>
                         {columns.map((column) => (
-                            <TableHead key={column.key as string} style={{ width: column.width }}>
+                            <TableHead  key={column.key as string} style={{ width: column.width }}>
                                 {column.header}
                             </TableHead>
                         ))}
