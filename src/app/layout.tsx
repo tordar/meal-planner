@@ -21,7 +21,7 @@ export default function RootLayout({
         <body className={`${inter.className} h-full`}>
         <div className="flex h-full">
             {/* Sidebar */}
-            <div className="w-64 bg-white shadow-md flex flex-col">
+            <div className="w-64 bg-gray-100 shadow-md flex flex-col">
                 {/* Logo */}
                 <div className="p-4 border-b">
                     <span className="text-xl font-semibold">Food Planner</span>
@@ -34,10 +34,6 @@ export default function RootLayout({
                     <NavItem href="/ideas" icon={<Coffee size={20} />} label="Ideas" />
                 </nav>
 
-                {/* Resources Section */}
-                <div className="mt-auto p-4 border-t">
-                    <NavItem href="/docs" icon={<FileQuestion size={20} />} label="Documentation" />
-                </div>
             </div>
 
             {/* Main Content */}
