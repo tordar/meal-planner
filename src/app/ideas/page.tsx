@@ -54,7 +54,7 @@ export default function IdeaTracker() {
                     <SearchBar
                         value={searchTerm}
                         onChange={handleSearch}
-                        placeholder="Search ideas..."
+                        placeholder="Search..."
                     />
                     <div className="flex space-x-4 text-sm text-gray-600">
                         <span>Ideas: {ideas.length}</span>
@@ -90,7 +90,7 @@ export default function IdeaTracker() {
                     <div className="flex-grow overflow-auto">
                     {isLoading ? (
                         <div className="p-6">
-                            <p>Loading ideas...</p>
+                            <p>Loading...</p>
                         </div>
                     ) : (
                         <DataTable

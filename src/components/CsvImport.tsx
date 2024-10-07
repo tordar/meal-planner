@@ -8,8 +8,12 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import Papa from 'papaparse'
 
 interface CSVImportProps {
-    onImport: (data: any[]) => void;
+    onImport: (data: Record<string, string>[]) => void;
     fields: string[];
+}
+
+interface CSVRow {
+    [key: string]: string;
 }
 
 export function CSVImport({ onImport, fields }: CSVImportProps) {
@@ -26,7 +30,7 @@ export function CSVImport({ onImport, fields }: CSVImportProps) {
 
     const handleImport = () => {
         if (file) {
-            Papa.parse(file, {
+            Papa.parse<CSVRow>(file, {
                 complete: (results) => {
                     console.log('Parsed results:', results);
 
@@ -51,9 +55,9 @@ export function CSVImport({ onImport, fields }: CSVImportProps) {
                     }
 
                     const data = results.data
-                        .filter((row: any) => Object.values(row).some((value) => value !== ''))
-                        .map((row: any) => {
-                            const newRow: any = {};
+                        .filter((row) => Object.values(row).some((value) => value !== ''))
+                        .map((row) => {
+                            const newRow: Record<string, string> = {};
                             fields.forEach(field => {
                                 const matchingHeader = Object.keys(row).find(header =>
                                     header.toLowerCase().trim() === field.toLowerCase()

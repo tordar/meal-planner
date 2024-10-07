@@ -54,7 +54,7 @@ export default function SideTracker() {
                     <SearchBar
                         value={searchTerm}
                         onChange={handleSearch}
-                        placeholder="Search sides..."
+                        placeholder="Search..."
                     />
                     <div className="flex space-x-4 text-sm text-gray-600">
                         <span>Sides: {sides.length}</span>
@@ -91,7 +91,7 @@ export default function SideTracker() {
                     <div className="flex-grow overflow-auto">
                         {isLoading ? (
                             <div className="p-6">
-                                <p>Loading ideas...</p>
+                                <p>Loading...</p>
                             </div>
                         ) : (
                         <DataTable

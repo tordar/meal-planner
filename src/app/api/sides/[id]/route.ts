@@ -36,6 +36,11 @@ export async function PUT(
         const body = await request.json()
         const { _id, ...updateData } = body
 
+        // Ensure the _id in the body matches the id in the URL
+        if (_id && _id !== id) {
+            return NextResponse.json({ error: "ID mismatch" }, { status: 400 })
+        }
+
         const result = await db.collection("sides").updateOne(
             { _id: new ObjectId(id) },
             { $set: updateData }

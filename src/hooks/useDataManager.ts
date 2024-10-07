@@ -11,10 +11,6 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-        fetchData()
-    }, [])
-
-    useEffect(() => {
         if (searchTerm) {
             const lowercasedSearch = searchTerm.toLowerCase()
             setFilteredData(data.filter(item =>
@@ -27,7 +23,7 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
         }
     }, [searchTerm, data])
 
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         setIsLoading(true)
         try {
             const response = await fetch(apiEndpoint)
@@ -42,12 +38,19 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
         } finally {
             setIsLoading(false)
         }
-    }
+    }, [apiEndpoint])
+
+    useEffect(() => {
+        fetchData()
+    }, [fetchData])
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
         if (editingItem) {
-            setEditingItem(prev => ({ ...prev, [name]: value }))
+            setEditingItem(prev => {
+                if (prev === null) return null
+                return { ...prev, [name]: value } as T
+            })
         } else {
             setNewItem(prev => ({ ...prev, [name]: value }))
         }
@@ -118,7 +121,7 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
         setSearchTerm(e.target.value)
     }
 
-    const handleImport = async (importedData: Omit<T, '_id'>[]) => {
+    const handleImport = async (importedData: Record<string, string>[]) => {
         setIsLoading(true)
         setError(null)
         try {

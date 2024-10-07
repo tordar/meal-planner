@@ -57,7 +57,7 @@ export default function MealTracker() {
             <SearchBar
                 value={searchTerm}
                 onChange={handleSearch}
-                placeholder="Search meals..."
+                placeholder="Search..."
             />
             <div className="flex space-x-4 text-sm text-gray-600">
               <span>Meals: {meals.length}</span>
@@ -93,7 +93,7 @@ export default function MealTracker() {
             <div className="flex-grow overflow-auto">
               {isLoading ? (
                   <div className="p-6">
-                    <p>Loading meals...</p>
+                    <p>Loading...</p>
                   </div>
               ) : (
                   <DataTable

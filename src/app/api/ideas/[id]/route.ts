@@ -36,19 +36,24 @@ export async function PUT(
         const body = await request.json()
         const { _id, ...updateData } = body
 
+        // Ensure the _id in the body matches the id in the URL
+        if (_id && _id !== id) {
+            return NextResponse.json({ error: "ID mismatch" }, { status: 400 })
+        }
+
         const result = await db.collection("ideas").updateOne(
             { _id: new ObjectId(id) },
             { $set: updateData }
         )
 
         if (result.matchedCount === 0) {
-            return NextResponse.json({ error: "Idea not found" }, { status: 404 })
+            return NextResponse.json({ error: "Item not found" }, { status: 404 })
         }
 
-        return NextResponse.json({ message: "Idea updated successfully" }, { status: 200 })
+        return NextResponse.json({ message: "Item updated successfully" }, { status: 200 })
     } catch (error) {
-        console.error('Error updating idea:', error)
-        return NextResponse.json({ error: "Failed to update idea" }, { status: 500 })
+        console.error('Error updating item:', error)
+        return NextResponse.json({ error: "Failed to update item" }, { status: 500 })
     }
 }
 
