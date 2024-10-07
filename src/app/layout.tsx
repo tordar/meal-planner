@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { NavLink } from '@/components/NavLink'
-import { Utensils, Book, Coffee, FileQuestion } from 'lucide-react'
+import { Utensils, Book, Coffee } from 'lucide-react'
 
 const inter = Inter({ subsets: ['latin'] })
 
