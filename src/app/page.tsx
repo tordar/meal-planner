@@ -7,6 +7,7 @@ import { DataForm } from "@/components/DataForm"
 import { SearchBar } from "@/components/SearchBar"
 import { useDataManager } from "@/hooks/useDataManager"
 import { CSVImport } from "@/components/CsvImport"
+import { useSession } from 'next-auth/react'
 
 interface Meal {
   _id: string;
@@ -34,6 +35,7 @@ const mealColumns: Array<{key: keyof Meal; header: string; width: string}> = [
 ]
 
 export default function MealTracker() {
+  const { data: session } = useSession()
   const {
     data: meals,
     newItem: newMeal,
@@ -42,6 +44,8 @@ export default function MealTracker() {
     isDialogOpen,
     searchTerm,
     setIsDialogOpen,
+    error,
+    isAuthenticated,
     handleInputChange,
     handleSubmit,
     handleEdit,
@@ -50,6 +54,25 @@ export default function MealTracker() {
     handleImport
   } = useDataManager<Meal>('/api/meals')
 
+  if (!isAuthenticated) {
+    return (
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">Welcome to Food Planner</h1>
+            <p>Please sign in to access your meals.</p>
+          </div>
+        </div>
+    )
+  }
+
+  if (isLoading) {
+    return <div>Loading meals...</div>
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>
+  }
+  
   return (
       <div className="h-full flex flex-col bg-gray-100">
         <div className="p-6 flex flex-col h-full">

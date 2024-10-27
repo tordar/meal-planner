@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useSession } from 'next-auth/react'
 
 export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
+    const { data: session, status } = useSession()
     const [data, setData] = useState<T[]>([])
     const [filteredData, setFilteredData] = useState<T[]>([])
     const [newItem, setNewItem] = useState<Omit<T, '_id'>>({} as Omit<T, '_id'>)
@@ -24,6 +26,8 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     }, [searchTerm, data])
 
     const fetchData = useCallback(async () => {
+        if (status !== 'authenticated') return
+
         setIsLoading(true)
         try {
             const response = await fetch(apiEndpoint)
@@ -38,7 +42,7 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
         } finally {
             setIsLoading(false)
         }
-    }, [apiEndpoint])
+    }, [apiEndpoint, status])
 
     useEffect(() => {
         fetchData()
@@ -58,6 +62,10 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        if (status !== 'authenticated') {
+            setError('You must be logged in to perform this action')
+            return
+        }
         setError(null)
         try {
             if (editingItem) {
@@ -96,11 +104,19 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     }
 
     const handleEdit = (item: T) => {
+        if (status !== 'authenticated') {
+            setError('You must be logged in to edit items')
+            return
+        }
         setEditingItem(item)
         setIsDialogOpen(true)
     }
 
     const handleDelete = async (id: string) => {
+        if (status !== 'authenticated') {
+            setError('You must be logged in to delete items')
+            return
+        }
         setError(null)
         try {
             const response = await fetch(`${apiEndpoint}/${id}`, {
@@ -122,6 +138,10 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     }
 
     const handleImport = async (importedData: Record<string, string>[]) => {
+        if (status !== 'authenticated') {
+            setError('You must be logged in to import data')
+            return
+        }
         setIsLoading(true)
         setError(null)
         try {
@@ -154,6 +174,7 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
         isDialogOpen,
         searchTerm,
         error,
+        isAuthenticated: status === 'authenticated',
         setIsDialogOpen,
         handleInputChange,
         handleSubmit,
