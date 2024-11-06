@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 
 export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
-    const { data: session, status } = useSession()
+    const { data: sessionData, status } = useSession()
     const [data, setData] = useState<T[]>([])
     const [filteredData, setFilteredData] = useState<T[]>([])
     const [newItem, setNewItem] = useState<Omit<T, '_id'>>({} as Omit<T, '_id'>)
@@ -26,7 +26,7 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     }, [searchTerm, data])
 
     const fetchData = useCallback(async () => {
-        if (status !== 'authenticated') return
+        if (status !== 'authenticated' || !sessionData) return
 
         setIsLoading(true)
         try {
@@ -42,7 +42,7 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
         } finally {
             setIsLoading(false)
         }
-    }, [apiEndpoint, status])
+    }, [apiEndpoint, status, sessionData])
 
     useEffect(() => {
         fetchData()
@@ -62,7 +62,7 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (status !== 'authenticated') {
+        if (status !== 'authenticated' || !sessionData) {
             setError('You must be logged in to perform this action')
             return
         }
@@ -104,7 +104,7 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     }
 
     const handleEdit = (item: T) => {
-        if (status !== 'authenticated') {
+        if (status !== 'authenticated' || !sessionData) {
             setError('You must be logged in to edit items')
             return
         }
@@ -113,7 +113,7 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     }
 
     const handleDelete = async (id: string) => {
-        if (status !== 'authenticated') {
+        if (status !== 'authenticated' || !sessionData) {
             setError('You must be logged in to delete items')
             return
         }
@@ -138,7 +138,7 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     }
 
     const handleImport = async (importedData: Record<string, string>[]) => {
-        if (status !== 'authenticated') {
+        if (status !== 'authenticated' || !sessionData) {
             setError('You must be logged in to import data')
             return
         }
@@ -174,7 +174,7 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
         isDialogOpen,
         searchTerm,
         error,
-        isAuthenticated: status === 'authenticated',
+        isAuthenticated: status === 'authenticated' && !!sessionData,
         setIsDialogOpen,
         handleInputChange,
         handleSubmit,

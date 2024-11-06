@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { NavLink } from '@/components/NavLink'
-import { Utensils, Book, Coffee, User } from 'lucide-react'
+import { Utensils, Book, Coffee } from 'lucide-react'
 import { Providers } from './providers'
 import { SignInButton } from '@/components/SignInButton'
 

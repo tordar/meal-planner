@@ -7,7 +7,6 @@ import { DataForm } from "@/components/DataForm"
 import { SearchBar } from "@/components/SearchBar"
 import { useDataManager } from "@/hooks/useDataManager"
 import { CSVImport } from "@/components/CsvImport"
-import { useSession } from 'next-auth/react'
 
 interface Meal {
   _id: string;
@@ -35,7 +34,6 @@ const mealColumns: Array<{key: keyof Meal; header: string; width: string}> = [
 ]
 
 export default function MealTracker() {
-  const { data: session } = useSession()
   const {
     data: meals,
     newItem: newMeal,
