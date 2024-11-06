@@ -39,6 +39,8 @@ export default function IdeaTracker() {
         isDialogOpen,
         searchTerm,
         setIsDialogOpen,
+        error,
+        isAuthenticated,
         handleInputChange,
         handleSubmit,
         handleEdit,
@@ -46,6 +48,25 @@ export default function IdeaTracker() {
         handleSearch,
         handleImport
     } = useDataManager<Idea>('/api/ideas')
+
+    if (!isAuthenticated) {
+        return (
+            <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                    <h1 className="text-2xl font-bold mb-4">Welcome to Food Planner</h1>
+                    <p>Please sign in to access your meals.</p>
+                </div>
+            </div>
+        )
+    }
+
+    if (isLoading) {
+        return <div>Loading meals...</div>
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>
+    }
 
     return (
         <div className="h-full flex flex-col bg-gray-100">
