@@ -35,5 +35,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# other
-ToDo.txt
+# Ignore all .txt files
+*.txt
