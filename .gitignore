@@ -37,3 +37,4 @@ next-env.d.ts
 
 # Ignore all .txt files
 *.txt
+ToDo.txt
