@@ -7,7 +7,6 @@ import { DataForm } from "@/components/DataForm"
 import { SearchBar } from "@/components/SearchBar"
 import { useDataManager } from "@/hooks/useDataManager"
 import {CSVImport} from "@/components/CsvImport";
-import { useSession } from "next-auth/react"
 
 interface Idea {
     _id: string;
@@ -32,7 +31,6 @@ const ideaColumns: Array<{key: keyof Idea; header: string; width: string}> = [
 ]
 
 export default function IdeaTracker() {
-    const { status } = useSession()
     const {
         data: ideas,
         newItem: newIdea,

@@ -7,7 +7,6 @@ import { DataForm } from "@/components/DataForm"
 import { SearchBar } from "@/components/SearchBar"
 import { useDataManager } from "@/hooks/useDataManager"
 import {CSVImport} from "@/components/CsvImport";
-import { useSession } from "next-auth/react"
 
 interface Sides {
     _id: string;
