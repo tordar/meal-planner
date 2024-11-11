@@ -7,6 +7,7 @@ import { DataForm } from "@/components/DataForm"
 import { SearchBar } from "@/components/SearchBar"
 import { useDataManager } from "@/hooks/useDataManager"
 import {CSVImport} from "@/components/CsvImport";
+import { useSession } from "next-auth/react"
 
 interface Sides {
     _id: string;
@@ -41,7 +42,7 @@ export default function SideTracker() {
         searchTerm,
         setIsDialogOpen,
         error,
-        isAuthenticated,
+        authStatus,
         handleInputChange,
         handleSubmit,
         handleEdit,
@@ -49,8 +50,19 @@ export default function SideTracker() {
         handleSearch,
         handleImport
     } = useDataManager<Sides>('/api/sides')
-    
-    if (!isAuthenticated) {
+
+
+    if (authStatus === "loading") {
+        return (
+            <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                    <p className="text-xl">Loading...</p>
+                </div>
+            </div>
+        )
+    }
+
+    if (authStatus === "unauthenticated") {
         return (
             <div className="flex items-center justify-center h-full">
                 <div className="text-center">
@@ -62,13 +74,26 @@ export default function SideTracker() {
     }
 
     if (isLoading) {
-        return <div>Loading meals...</div>
+        return (
+            <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                    <p className="text-xl">Loading meals...</p>
+                </div>
+            </div>
+        )
     }
 
     if (error) {
-        return <div>Error: {error}</div>
+        return (
+            <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                    <p className="text-xl text-red-500">Error: {error}</p>
+                </div>
+            </div>
+        )
     }
-    
+
+
     return (
         <div className="h-full flex flex-col bg-gray-100">
             <div className="p-6 flex flex-col h-full">
@@ -111,22 +136,16 @@ export default function SideTracker() {
 
 
                     <div className="flex-grow overflow-auto">
-                        {isLoading ? (
-                            <div className="p-6">
-                                <p>Loading...</p>
-                            </div>
-                        ) : (
                         <DataTable
                             data={sides}
                             columns={sideColumns}
                             onEdit={handleEdit}
                             onDelete={(id) => handleDelete(id)}
                         />
-                    )}
                 </div>
                 </div>
             </div>
         </div>
 
-            )
-            }
+    )
+}

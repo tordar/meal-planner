@@ -12,21 +12,11 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     const [searchTerm, setSearchTerm] = useState('')
     const [error, setError] = useState<string | null>(null)
 
-    useEffect(() => {
-        if (searchTerm) {
-            const lowercasedSearch = searchTerm.toLowerCase()
-            setFilteredData(data.filter(item =>
-                Object.values(item).some(value =>
-                    value.toString().toLowerCase().includes(lowercasedSearch)
-                )
-            ))
-        } else {
-            setFilteredData(data)
-        }
-    }, [searchTerm, data])
-
     const fetchData = useCallback(async () => {
-        if (status !== 'authenticated' || !sessionData) return
+        if (status !== 'authenticated' || !sessionData) {
+            setIsLoading(false)
+            return
+        }
 
         setIsLoading(true)
         try {
@@ -47,6 +37,19 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     useEffect(() => {
         fetchData()
     }, [fetchData])
+
+    useEffect(() => {
+        if (searchTerm) {
+            const lowercasedSearch = searchTerm.toLowerCase()
+            setFilteredData(data.filter(item =>
+                Object.values(item).some(value =>
+                    value.toString().toLowerCase().includes(lowercasedSearch)
+                )
+            ))
+        } else {
+            setFilteredData(data)
+        }
+    }, [searchTerm, data])
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
@@ -174,7 +177,7 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
         isDialogOpen,
         searchTerm,
         error,
-        isAuthenticated: status === 'authenticated' && !!sessionData,
+        authStatus: status,
         setIsDialogOpen,
         handleInputChange,
         handleSubmit,

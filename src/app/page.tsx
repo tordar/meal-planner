@@ -7,6 +7,7 @@ import { DataForm } from "@/components/DataForm"
 import { SearchBar } from "@/components/SearchBar"
 import { useDataManager } from "@/hooks/useDataManager"
 import { CSVImport } from "@/components/CsvImport"
+import { useSession } from "next-auth/react"
 
 interface Meal {
   _id: string;
@@ -34,6 +35,7 @@ const mealColumns: Array<{key: keyof Meal; header: string; width: string}> = [
 ]
 
 export default function MealTracker() {
+  const { status } = useSession()
   const {
     data: meals,
     newItem: newMeal,
@@ -43,7 +45,7 @@ export default function MealTracker() {
     searchTerm,
     setIsDialogOpen,
     error,
-    isAuthenticated,
+    authStatus,
     handleInputChange,
     handleSubmit,
     handleEdit,
@@ -52,7 +54,17 @@ export default function MealTracker() {
     handleImport
   } = useDataManager<Meal>('/api/meals')
 
-  if (!isAuthenticated) {
+  if (authStatus === "loading") {
+    return (
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center">
+            <p className="text-xl">Loading...</p>
+          </div>
+        </div>
+    )
+  }
+
+  if (authStatus === "unauthenticated") {
     return (
         <div className="flex items-center justify-center h-full">
           <div className="text-center">
@@ -64,13 +76,26 @@ export default function MealTracker() {
   }
 
   if (isLoading) {
-    return <div>Loading meals...</div>
+    return (
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center">
+            <p className="text-xl">Loading meals...</p>
+          </div>
+        </div>
+    )
   }
 
   if (error) {
-    return <div>Error: {error}</div>
+    return (
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center">
+            <p className="text-xl text-red-500">Error: {error}</p>
+          </div>
+        </div>
+    )
   }
-  
+
+
   return (
       <div className="h-full flex flex-col bg-gray-100">
         <div className="p-6 flex flex-col h-full">
@@ -112,18 +137,12 @@ export default function MealTracker() {
             </div>
 
             <div className="flex-grow overflow-auto">
-              {isLoading ? (
-                  <div className="p-6">
-                    <p>Loading...</p>
-                  </div>
-              ) : (
-                  <DataTable
-                      data={meals}
-                      columns={mealColumns}
-                      onEdit={handleEdit}
-                      onDelete={(id) => handleDelete(id)}
-                  />
-              )}
+              <DataTable
+                  data={meals}
+                  columns={mealColumns}
+                  onEdit={handleEdit}
+                  onDelete={(id) => handleDelete(id)}
+              />
             </div>
           </div>
         </div>
