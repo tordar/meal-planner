@@ -42,6 +42,7 @@ export default function SideTracker() {
         setIsDialogOpen,
         error,
         authStatus,
+        hasWriteAccess,
         handleInputChange,
         handleSubmit,
         handleEdit,
@@ -112,10 +113,14 @@ export default function SideTracker() {
                         <h1 className="text-2xl font-bold">Side Tracker</h1>
 
                             <div className="flex gap-2">
+                                {hasWriteAccess && (
                                 <CSVImport onImport={handleImport} fields={sideFields.map(field => field.name)}/>
+                                )}
                                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                                     <DialogTrigger asChild>
-                                        <Button>Add New Side</Button>
+                                        {hasWriteAccess && (
+                                            <Button>Add New Side</Button>
+                                        )}
                                     </DialogTrigger>
                                     <DialogContent>
                                         <DialogHeader>

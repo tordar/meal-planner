@@ -21,16 +21,14 @@ const mealFields = [
   { name: 'name', label: 'Meal Name', type: 'text' as const, required: true },
   { name: 'description', label: 'Description', type: 'text' as const },
   { name: 'notes', label: 'Notes', type: 'textarea' as const },
-  { name: 'recipe', label: 'Recipe', type: 'textarea' as const },
-  { name: 'time', label: 'Time', type: 'text' as const },
+  { name: 'recipe', label: 'Recipe', type: 'textarea' as const }
 ]
 
 const mealColumns: Array<{key: keyof Meal; header: string; width: string}> = [
   { key: 'name', header: 'Name', width: '20%' },
   { key: 'description', header: 'Description', width: '25%' },
   { key: 'notes', header: 'Notes', width: '20%' },
-  { key: 'recipe', header: 'Recipe', width: '25%' },
-  { key: 'time', header: 'Time', width: '10%' },
+  { key: 'recipe', header: 'Recipe', width: '25%' }
 ]
 
 export default function MealTracker() {
@@ -43,6 +41,7 @@ export default function MealTracker() {
     searchTerm,
     setIsDialogOpen,
     error,
+    hasWriteAccess,
     authStatus,
     handleInputChange,
     handleSubmit,
@@ -113,10 +112,14 @@ export default function MealTracker() {
               <h1 className="text-2xl font-bold">Meal Tracker</h1>
 
               <div className="flex gap-2">
+                {hasWriteAccess && (
                 <CSVImport onImport={handleImport} fields={mealFields.map(field => field.name)}/>
+                )}
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button>Add New Meal</Button>
+                    {hasWriteAccess && (
+                        <Button>Add New Meal</Button>
+                    )}
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL
 export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     const { data: sessionData, status } = useSession()
     const [data, setData] = useState<T[]>([])
@@ -11,6 +12,8 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState('')
     const [error, setError] = useState<string | null>(null)
+
+    const hasWriteAccess = sessionData?.user?.email === ADMIN_EMAIL
 
     const fetchData = useCallback(async () => {
         if (status !== 'authenticated' || !sessionData) {
@@ -52,6 +55,10 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     }, [searchTerm, data])
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        if (!hasWriteAccess) {
+            setError('You do not have permission to modify data')
+            return
+        }
         const { name, value } = e.target
         if (editingItem) {
             setEditingItem(prev => {
@@ -65,6 +72,11 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        if (!hasWriteAccess) {
+            setError('You do not have permission to modify data')
+            return
+        }
+        setError(null)
         if (status !== 'authenticated' || !sessionData) {
             setError('You must be logged in to perform this action')
             return
@@ -107,8 +119,8 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     }
 
     const handleEdit = (item: T) => {
-        if (status !== 'authenticated' || !sessionData) {
-            setError('You must be logged in to edit items')
+        if (!hasWriteAccess) {
+            setError('You do not have permission to modify data')
             return
         }
         setEditingItem(item)
@@ -116,8 +128,8 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     }
 
     const handleDelete = async (id: string) => {
-        if (status !== 'authenticated' || !sessionData) {
-            setError('You must be logged in to delete items')
+        if (!hasWriteAccess) {
+            setError('You do not have permission to modify data')
             return
         }
         setError(null)
@@ -141,8 +153,8 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     }
 
     const handleImport = async (importedData: Record<string, string>[]) => {
-        if (status !== 'authenticated' || !sessionData) {
-            setError('You must be logged in to import data')
+        if (!hasWriteAccess) {
+            setError('You do not have permission to import data')
             return
         }
         setIsLoading(true)
@@ -178,6 +190,7 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
         searchTerm,
         error,
         authStatus: status,
+        hasWriteAccess,
         setIsDialogOpen,
         handleInputChange,
         handleSubmit,

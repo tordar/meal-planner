@@ -41,6 +41,7 @@ export default function IdeaTracker() {
         setIsDialogOpen,
         error,
         authStatus,
+        hasWriteAccess,
         handleInputChange,
         handleSubmit,
         handleEdit,
@@ -109,10 +110,14 @@ export default function IdeaTracker() {
                         <h1 className="text-2xl font-bold">Ideas Tracker</h1>
                         
                             <div className="flex gap-2">
+                                {hasWriteAccess && (
                                 <CSVImport onImport={handleImport} fields={ideaFields.map(field => field.name)}/>
+                                )}
                                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                                     <DialogTrigger asChild>
-                                        <Button>Add New Idea</Button>
+                                        {hasWriteAccess && (
+                                            <Button>Add New Idea</Button>
+                                        )}
                                     </DialogTrigger>
                                     <DialogContent>
                                         <DialogHeader>
