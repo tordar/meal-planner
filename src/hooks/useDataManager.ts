@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL
+
 export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     const { data: sessionData, status } = useSession()
     const [data, setData] = useState<T[]>([])
@@ -12,8 +12,30 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState('')
     const [error, setError] = useState<string | null>(null)
+    const [hasWriteAccess, setHasWriteAccess] = useState(false)
 
-    const hasWriteAccess = sessionData?.user?.email === ADMIN_EMAIL
+    const checkWriteAccess = useCallback(async () => {
+        if (status === 'authenticated' && sessionData) {
+            try {
+                const response = await fetch('/api/check-write-access')
+                if (response.ok) {
+                    const { hasAccess } = await response.json()
+                    setHasWriteAccess(hasAccess)
+                } else {
+                    setHasWriteAccess(false)
+                }
+            } catch (error) {
+                console.error('Failed to check write access:', error)
+                setHasWriteAccess(false)
+            }
+        } else {
+            setHasWriteAccess(false)
+        }
+    }, [status, sessionData])
+
+    useEffect(() => {
+        checkWriteAccess()
+    }, [checkWriteAccess])
 
     const fetchData = useCallback(async () => {
         if (status !== 'authenticated' || !sessionData) {
