@@ -1,6 +1,4 @@
-'use client'
-
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -28,16 +26,6 @@ export function DataTable<T extends { _id: string }>({
                                                          onDelete
                                                      }: DataTableProps<T>) {
     const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
-    const [debugInfo, setDebugInfo] = useState<string>('');
-
-    useEffect(() => {
-        const updateDebugInfo = () => {
-            setDebugInfo(`Window: ${window.innerWidth}x${window.innerHeight}, User Agent: ${navigator.userAgent}`);
-        };
-        updateDebugInfo();
-        window.addEventListener('resize', updateDebugInfo);
-        return () => window.removeEventListener('resize', updateDebugInfo);
-    }, []);
 
     const toggleRowExpansion = (id: string) => {
         setExpandedRows(prev => {
@@ -140,9 +128,6 @@ export function DataTable<T extends { _id: string }>({
                         ))}
                     </TableBody>
                 </Table>
-            </div>
-            <div className="fixed bottom-0 left-0 right-0 bg-white p-2 text-xs z-50">
-                Debug: {debugInfo}
             </div>
         </div>
     )
