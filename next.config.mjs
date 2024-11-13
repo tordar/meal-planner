@@ -5,6 +5,8 @@ const nextConfig = {
     experimental: {
         optimizeCss: true,
     },
+    // Add this to potentially help with the 404 and 500 page issues
+    output: 'standalone',
 }
 
-module.exports = nextConfig
+export default nextConfig;

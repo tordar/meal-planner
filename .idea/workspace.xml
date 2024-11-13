@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d4efc041-f57a-43d2-9686-e4f80f2a4f94" name="Changes" comment="action buttons missing in prod" />
+    <list default="true" id="d4efc041-f57a-43d2-9686-e4f80f2a4f94" name="Changes" comment="debug2">
+      <change beforePath="$PROJECT_DIR$/next.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.mjs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -90,7 +92,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1731491916619</updated>
-      <workItem from="1731491917668" duration="12400000" />
+      <workItem from="1731491917668" duration="12728000" />
     </task>
     <task id="LOCAL-00001" summary="mobile view with dropdown items">
       <option name="closed" value="true" />
@@ -140,7 +142,23 @@
       <option name="project" value="LOCAL" />
       <updated>1731506027716</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="debug">
+      <option name="closed" value="true" />
+      <created>1731506324581</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1731506324581</updated>
+    </task>
+    <task id="LOCAL-00008" summary="debug2">
+      <option name="closed" value="true" />
+      <created>1731506494478</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1731506494478</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,6 +172,8 @@
     <MESSAGE value="Improved mobile sign in UX" />
     <MESSAGE value="fixed mobile data table issue" />
     <MESSAGE value="action buttons missing in prod" />
-    <option name="LAST_COMMIT_MESSAGE" value="action buttons missing in prod" />
+    <MESSAGE value="debug" />
+    <MESSAGE value="debug2" />
+    <option name="LAST_COMMIT_MESSAGE" value="debug2" />
   </component>
 </project>
