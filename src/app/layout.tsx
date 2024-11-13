@@ -33,7 +33,7 @@ export default function RootLayout({
             <div className="flex h-full">
                 {/* Mobile Header */}
                 <header className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white shadow-md z-50 flex items-center justify-between px-4">
-                    <span className="text-xl font-semibold">Food Planner</span>
+                    <span className="text-xl font-semibold">Meal Planner</span>
                     <Sheet>
                         <SheetTrigger asChild>
                             <Button variant="ghost" size="icon" aria-label="Open menu">
@@ -60,7 +60,7 @@ export default function RootLayout({
                 <aside className="hidden md:flex w-64 bg-gray-100 shadow-md flex-col">
                     {/* Logo */}
                     <div className="p-4 border-b">
-                        <span className="text-xl font-semibold">Food Planner</span>
+                        <span className="text-xl font-semibold">Meal Planner</span>
                     </div>
 
                     {/* Navigation */}

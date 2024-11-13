@@ -27,7 +27,7 @@ const mealFields = [
 ]
 
 const mealColumns: Array<{key: keyof Meal; header: string; width: string; hideOnMobile: boolean}> = [
-  { key: 'name', header: 'Name', width: '25%', hideOnMobile: false },
+  { key: 'name', header: 'Name', width: 'auto', hideOnMobile: false },
   { key: 'description', header: 'Description', width: '25%', hideOnMobile: true },
   { key: 'notes', header: 'Notes', width: '25%', hideOnMobile: true },
   { key: 'recipe', header: 'Recipe', width: '25%', hideOnMobile: true }
@@ -110,7 +110,7 @@ export default function MealTracker() {
 
           <div className="bg-white rounded-lg shadow-sm flex flex-col flex-grow overflow-hidden">
             <div className="flex justify-between items-center p-4 border-b">
-              <h1 className="text-2xl font-bold">Meal Tracker</h1>
+              <h1 className="text-2xl font-bold">Meals</h1>
 
               <div className="flex gap-2">
                 {hasWriteAccess && (

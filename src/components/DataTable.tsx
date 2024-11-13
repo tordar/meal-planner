@@ -46,7 +46,7 @@ export function DataTable<T extends { _id: string }>({
 
     return (
         <div className="relative overflow-x-auto">
-            <Table className="w-full table-fixed">
+            <Table className="w-full">
                 <TableHeader className="sticky top-0 bg-white z-10">
                     <TableRow>
                         {columns.map((column) => (
@@ -58,77 +58,75 @@ export function DataTable<T extends { _id: string }>({
                                 {column.header}
                             </TableHead>
                         ))}
-                        <TableHead className="w-[100px]">Actions</TableHead>
+                        <TableHead className="w-20 md:w-24 text-right">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {data.map((item) => (
-                    <React.Fragment key={item._id}>
-                        <TableRow>
-                            {columns.map((column) => (
-                                <TableCell
-                                    key={`${item._id}-${column.key as string}`}
-                                    className={`whitespace-normal break-words ${column.hideOnMobile ? 'hidden md:table-cell' : ''}`}
-                                    style={{
-                                        wordBreak: 'break-word'
-                                    }}
-                                >
-                                    <div>
-                                        {renderCellContent(item, column)}
-                                    </div>
-                                </TableCell>
-                            ))}
-                            <TableCell className="w-[100px]">
-                                <div className="flex items-center justify-end space-x-2">
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={() => toggleRowExpansion(item._id)}
-                                        aria-label={expandedRows.has(item._id) ? "Hide details" : "Show details"}
-                                        className="md:hidden"
+                        <React.Fragment key={item._id}>
+                            <TableRow className="relative">
+                                {columns.map((column) => (
+                                    <TableCell
+                                        key={`${item._id}-${column.key as string}`}
+                                        className={`whitespace-normal break-words ${
+                                            column.hideOnMobile ? 'hidden md:table-cell' : ''
+                                        } ${column.key === 'name' ? 'pr-20 md:pr-4' : ''}`}
                                     >
-                                        {expandedRows.has(item._id) ? (
-                                            <ChevronUp className="h-4 w-4" />
-                                        ) : (
-                                            <ChevronDown className="h-4 w-4" />
-                                        )}
-                                    </Button>
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                            <Button variant="ghost" size="icon" aria-label="Open menu">
-                                                <MoreHorizontal className="h-4 w-4" />
-                                            </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                            <DropdownMenuItem onClick={() => onEdit(item)}>
-                                                Edit
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem onClick={() => onDelete(item._id)}>
-                                                Delete
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </div>
-                            </TableCell>
-                        </TableRow>
-                        {expandedRows.has(item._id) && (
-                            <TableRow className="md:hidden">
-                                <TableCell colSpan={columns.length + 1}>
-                                    <div className="py-2 space-y-2">
-                                        {columns.filter(column => column.hideOnMobile).map((column) => (
-                                            <div key={column.key as string} className="break-words">
-                                                <strong>{column.header}:</strong>{' '}
-                                                <span className="inline-block w-full">
-                            {renderCellContent(item, column)}
-                          </span>
-                                            </div>
-                                        ))}
+                                        <div className={`${column.key === 'name' ? 'font-medium' : ''} ${
+                                            column.hideOnMobile ? 'max-h-32 overflow-y-auto' : ''
+                                        }`}>
+                                            {renderCellContent(item, column)}
+                                        </div>
+                                    </TableCell>
+                                ))}
+                                <TableCell className="w-20 md:w-24 absolute right-0 top-0 h-full">
+                                    <div className="flex items-center justify-end space-x-2 h-full">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            onClick={() => toggleRowExpansion(item._id)}
+                                            aria-label={expandedRows.has(item._id) ? "Hide details" : "Show details"}
+                                            className="md:hidden"
+                                        >
+                                            {expandedRows.has(item._id) ? (
+                                                <ChevronUp className="h-4 w-4" />
+                                            ) : (
+                                                <ChevronDown className="h-4 w-4" />
+                                            )}
+                                        </Button>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" size="icon" aria-label="Open menu">
+                                                    <MoreHorizontal className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuItem onClick={() => onEdit(item)}>
+                                                    Edit
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => onDelete(item._id)}>
+                                                    Delete
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
                                     </div>
                                 </TableCell>
                             </TableRow>
-                        )}
-                    </React.Fragment>
-                ))}
+                            {expandedRows.has(item._id) && (
+                                <TableRow className="md:hidden">
+                                    <TableCell colSpan={columns.length + 1}>
+                                        <div className="py-2 space-y-2">
+                                            {columns.filter(column => column.hideOnMobile).map((column) => (
+                                                <div key={column.key as string}>
+                                                    <strong>{column.header}:</strong> {renderCellContent(item, column)}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </React.Fragment>
+                    ))}
                 </TableBody>
             </Table>
         </div>
