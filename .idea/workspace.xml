@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d4efc041-f57a-43d2-9686-e4f80f2a4f94" name="Changes" comment="Improved mobile sign in UX">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/ideas/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/ideas/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/sides/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/sides/page.tsx" afterDir="false" />
+    <list default="true" id="d4efc041-f57a-43d2-9686-e4f80f2a4f94" name="Changes" comment="fixed mobile data table issue">
       <change beforePath="$PROJECT_DIR$/src/components/DataTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DataTable.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -97,7 +92,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1731491916619</updated>
-      <workItem from="1731491917668" duration="11522000" />
+      <workItem from="1731491917668" duration="12055000" />
     </task>
     <task id="LOCAL-00001" summary="mobile view with dropdown items">
       <option name="closed" value="true" />
@@ -131,7 +126,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731503347219</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="fixed mobile data table issue">
+      <option name="closed" value="true" />
+      <created>1731505581217</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1731505581217</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -143,6 +146,7 @@
     <MESSAGE value="Improved data table view on desktop" />
     <MESSAGE value="sign in button on mobile more visible" />
     <MESSAGE value="Improved mobile sign in UX" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improved mobile sign in UX" />
+    <MESSAGE value="fixed mobile data table issue" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed mobile data table issue" />
   </component>
 </project>

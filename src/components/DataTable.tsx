@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -26,6 +26,16 @@ export function DataTable<T extends { _id: string }>({
                                                          onDelete
                                                      }: DataTableProps<T>) {
     const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     const toggleRowExpansion = (id: string) => {
         setExpandedRows(prev => {
@@ -86,7 +96,7 @@ export function DataTable<T extends { _id: string }>({
                                             size="icon"
                                             onClick={() => toggleRowExpansion(item._id)}
                                             aria-label={expandedRows.has(item._id) ? "Hide details" : "Show details"}
-                                            className="md:hidden"
+                                            className={isMobile ? '' : 'md:hidden'}
                                         >
                                             {expandedRows.has(item._id) ? (
                                                 <ChevronUp className="h-4 w-4" />
