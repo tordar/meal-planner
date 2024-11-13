@@ -39,7 +39,8 @@ export default function RootLayout({
         <Providers>
             <div className="flex h-full">
                 {/* Mobile Header */}
-                <header className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white shadow-md z-50 flex items-center justify-between px-4">
+                <header
+                    className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white shadow-md z-50 flex items-center justify-between px-4">
                     <span className="text-xl font-semibold">Meal Planner</span>
                     <Sheet>
                         <SheetTrigger asChild>
@@ -84,10 +85,10 @@ export default function RootLayout({
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 flex flex-col relative">
+                <main className="flex-1 overflow-hidden flex flex-col">
                     <div className="md:hidden h-16"/>
                     {/* Spacer for mobile header */}
-                    <div className="flex-grow flex flex-col">
+                    <div className="flex-grow overflow-auto">
                         {children}
                     </div>
                 </main>
