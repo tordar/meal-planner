@@ -34,7 +34,6 @@ const mealColumns: Array<{key: keyof Meal; header: string; width: string; hideOn
 ]
 
 export default function MealTracker() {
-  
   const {
     data: meals,
     newItem: newMeal,
@@ -75,6 +74,7 @@ export default function MealTracker() {
         </div>
     )
   }
+
   if (isLoading) {
     return (
         <div className="flex items-center justify-center flex-grow">
@@ -94,7 +94,7 @@ export default function MealTracker() {
         </div>
     )
   }
-  
+
   return (
       <div className="h-full flex flex-col bg-gray-100">
         <div className="p-6 flex flex-col h-full">
