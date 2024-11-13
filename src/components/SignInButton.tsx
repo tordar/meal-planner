@@ -9,7 +9,7 @@ export function SignInButton() {
     const { data: session, status } = useSession()
 
     if (status === "loading") {
-        return <Button disabled>Loading...</Button>
+        return
     }
 
     if (session && session.user) {

@@ -78,9 +78,15 @@ export default function RootLayout({
                 </aside>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-hidden">
+            <main className="flex-1 overflow-hidden relative">
                     <div className="md:hidden h-16" /> {/* Spacer for mobile header */}
                     {children}
+                    {/* Mobile Sign In Button */}
+                    <div className="md:hidden fixed inset-0 flex items-center justify-center pointer-events-none mb-8">
+                        <div className="pointer-events-auto">
+                            <SignInButton />
+                        </div>
+                    </div>
                 </main>
             </div>
         </Providers>
