@@ -96,7 +96,7 @@ export function DataTable<T extends { _id: string }>({
                                             size="icon"
                                             onClick={() => toggleRowExpansion(item._id)}
                                             aria-label={expandedRows.has(item._id) ? "Hide details" : "Show details"}
-                                            className={isMobile ? '' : 'md:hidden'}
+                                            className="md:hidden touch-manipulation"
                                         >
                                             {expandedRows.has(item._id) ? (
                                                 <ChevronUp className="h-4 w-4" />
@@ -106,7 +106,7 @@ export function DataTable<T extends { _id: string }>({
                                         </Button>
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" size="icon" aria-label="Open menu">
+                                                <Button variant="ghost" size="icon" aria-label="Open menu" className="touch-manipulation">
                                                     <MoreHorizontal className="h-4 w-4" />
                                                 </Button>
                                             </DropdownMenuTrigger>
@@ -139,6 +139,9 @@ export function DataTable<T extends { _id: string }>({
                     ))}
                 </TableBody>
             </Table>
+            <div className="fixed bottom-0 left-0 bg-white p-2 text-xs">
+                Debug: isMobile = {isMobile.toString()}, Window Width = {typeof window !== 'undefined' ? window.innerWidth : 'N/A'}
+            </div>
         </div>
     )
 }

@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d4efc041-f57a-43d2-9686-e4f80f2a4f94" name="Changes" comment="fixed mobile data table issue">
-      <change beforePath="$PROJECT_DIR$/src/components/DataTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DataTable.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="d4efc041-f57a-43d2-9686-e4f80f2a4f94" name="Changes" comment="action buttons missing in prod" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -92,7 +90,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1731491916619</updated>
-      <workItem from="1731491917668" duration="12055000" />
+      <workItem from="1731491917668" duration="12400000" />
     </task>
     <task id="LOCAL-00001" summary="mobile view with dropdown items">
       <option name="closed" value="true" />
@@ -134,7 +132,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731505581217</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="action buttons missing in prod">
+      <option name="closed" value="true" />
+      <created>1731506027716</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1731506027716</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -147,6 +153,7 @@
     <MESSAGE value="sign in button on mobile more visible" />
     <MESSAGE value="Improved mobile sign in UX" />
     <MESSAGE value="fixed mobile data table issue" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed mobile data table issue" />
+    <MESSAGE value="action buttons missing in prod" />
+    <option name="LAST_COMMIT_MESSAGE" value="action buttons missing in prod" />
   </component>
 </project>
