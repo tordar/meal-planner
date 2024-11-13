@@ -32,8 +32,7 @@ export default function RootLayout({
         <Providers>
             <div className="flex h-full">
                 {/* Mobile Header */}
-                <header
-                    className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white shadow-md z-50 flex items-center justify-between px-4">
+                <header className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white shadow-md z-50 flex items-center justify-between px-4">
                     <span className="text-xl font-semibold">Food Planner</span>
                     <Sheet>
                         <SheetTrigger asChild>
@@ -77,15 +76,12 @@ export default function RootLayout({
                     </div>
                 </aside>
 
-            {/* Main Content */}
-            <main className="flex-1 overflow-hidden relative">
-                    <div className="md:hidden h-16" /> {/* Spacer for mobile header */}
-                    {children}
-                    {/* Mobile Sign In Button */}
-                    <div className="md:hidden fixed inset-0 flex items-center justify-center pointer-events-none mb-8">
-                        <div className="pointer-events-auto">
-                            <SignInButton />
-                        </div>
+                {/* Main Content */}
+                <main className="flex-1 flex flex-col relative">
+                    <div className="md:hidden h-16"/>
+                    {/* Spacer for mobile header */}
+                    <div className="flex-grow flex flex-col">
+                        {children}
                     </div>
                 </main>
             </div>
@@ -95,12 +91,12 @@ export default function RootLayout({
     )
 }
 
-function NavItem({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
+function NavItem({href, icon, label}: { href: string; icon: React.ReactNode; label: string }) {
     return (
         <NavLink href={href} className="flex items-center py-2 px-4 text-gray-700 hover:bg-gray-100">
-      <span className="inline-flex items-center justify-center w-6 h-6 mr-3">
-        {icon}
-      </span>
+            <span className="inline-flex items-center justify-center w-6 h-6 mr-3">
+                {icon}
+            </span>
             <span>{label}</span>
         </NavLink>
     )

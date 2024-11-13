@@ -8,6 +8,7 @@ import { DataForm } from "@/components/DataForm"
 import { SearchBar } from "@/components/SearchBar"
 import { useDataManager } from "@/hooks/useDataManager"
 import { CSVImport } from "@/components/CsvImport"
+import { SignInButton } from '@/components/SignInButton'
 
 interface Meal {
   _id: string;
@@ -64,18 +65,18 @@ export default function MealTracker() {
 
   if (authStatus === "unauthenticated") {
     return (
-        <div className="flex items-center justify-center h-full">
+        <div className="flex items-center justify-center flex-grow">
           <div className="text-center">
             <h1 className="text-2xl font-bold mb-4">Welcome to Food Planner</h1>
-            <p>Please sign in to access your meals.</p>
+            <p className="mb-4">Please sign in to access your meals.</p>
+            <SignInButton />
           </div>
         </div>
     )
   }
-
   if (isLoading) {
     return (
-        <div className="flex items-center justify-center h-full">
+        <div className="flex items-center justify-center flex-grow">
           <div className="text-center">
             <p className="text-xl">Loading meals...</p>
           </div>
@@ -85,14 +86,14 @@ export default function MealTracker() {
 
   if (error) {
     return (
-        <div className="flex items-center justify-center h-full">
+        <div className="flex items-center justify-center flex-grow">
           <div className="text-center">
             <p className="text-xl text-red-500">Error: {error}</p>
           </div>
         </div>
     )
   }
-
+  
   return (
       <div className="h-full flex flex-col bg-gray-100">
         <div className="p-6 flex flex-col h-full">
