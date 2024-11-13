@@ -34,6 +34,7 @@ const mealColumns: Array<{key: keyof Meal; header: string; width: string; hideOn
 ]
 
 export default function MealTracker() {
+  
   const {
     data: meals,
     newItem: newMeal,
