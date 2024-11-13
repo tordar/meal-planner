@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { DataTable } from "@/components/DataTable"
@@ -21,14 +22,14 @@ const mealFields = [
   { name: 'name', label: 'Meal Name', type: 'text' as const, required: true },
   { name: 'description', label: 'Description', type: 'text' as const },
   { name: 'notes', label: 'Notes', type: 'textarea' as const },
-  { name: 'recipe', label: 'Recipe', type: 'textarea' as const }
+  { name: 'recipe', label: 'Recipe', type: 'textarea' as const}
 ]
 
-const mealColumns: Array<{key: keyof Meal; header: string; width: string}> = [
-  { key: 'name', header: 'Name', width: '20%' },
-  { key: 'description', header: 'Description', width: '25%' },
-  { key: 'notes', header: 'Notes', width: '20%' },
-  { key: 'recipe', header: 'Recipe', width: '25%' }
+const mealColumns: Array<{key: keyof Meal; header: string; width: string; hideOnMobile: boolean}> = [
+  { key: 'name', header: 'Name', width: '20%', hideOnMobile: false },
+  { key: 'description', header: 'Description', width: '20%', hideOnMobile: true },
+  { key: 'notes', header: 'Notes', width: '15%', hideOnMobile: true },
+  { key: 'recipe', header: 'Recipe', width: '35%', hideOnMobile: true }
 ]
 
 export default function MealTracker() {
@@ -92,7 +93,6 @@ export default function MealTracker() {
     )
   }
 
-
   return (
       <div className="h-full flex flex-col bg-gray-100">
         <div className="p-6 flex flex-col h-full">
@@ -100,10 +100,10 @@ export default function MealTracker() {
             <SearchBar
                 value={searchTerm}
                 onChange={handleSearch}
-                placeholder="Search..."
+                placeholder="Search meals..."
             />
             <div className="flex space-x-4 text-sm text-gray-600">
-              <span>Meals: {meals.length}</span>
+              <span>Total Meals: {meals.length}</span>
             </div>
           </div>
 
@@ -113,7 +113,7 @@ export default function MealTracker() {
 
               <div className="flex gap-2">
                 {hasWriteAccess && (
-                <CSVImport onImport={handleImport} fields={mealFields.map(field => field.name)}/>
+                    <CSVImport onImport={handleImport} fields={mealFields.map(field => field.name)}/>
                 )}
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>

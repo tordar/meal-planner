@@ -1,12 +1,14 @@
+import React, { useState } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, ChevronDown, ChevronUp } from 'lucide-react'
 
 interface Column<T> {
     key: keyof T;
     header: string;
     width: string;
+    hideOnMobile: boolean;
 }
 
 interface DataTableProps<T> {
@@ -16,51 +18,101 @@ interface DataTableProps<T> {
     onDelete: (id: string) => void;
 }
 
-export function DataTable<T extends { _id: string }>({ data, columns, onEdit, onDelete }: DataTableProps<T>) {
+export function DataTable<T extends { _id: string }>({
+                                                         data,
+                                                         columns,
+                                                         onEdit,
+                                                         onDelete
+                                                     }: DataTableProps<T>) {
+    const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+
+    const toggleRowExpansion = (id: string) => {
+        setExpandedRows(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(id)) {
+                newSet.delete(id);
+            } else {
+                newSet.add(id);
+            }
+            return newSet;
+        });
+    };
+
     return (
-        <div className="relative">
+        <div className="relative overflow-x-auto">
             <Table>
                 <TableHeader className="sticky top-0 bg-white z-10">
                     <TableRow>
                         {columns.map((column) => (
-                            <TableHead  key={column.key as string} style={{ width: column.width }}>
+                            <TableHead
+                                key={column.key as string}
+                                className={`${column.width} ${column.hideOnMobile ? 'hidden md:table-cell' : ''}`}
+                            >
                                 {column.header}
                             </TableHead>
                         ))}
-                        <TableHead style={{ width: '70px' }}></TableHead>
+                        <TableHead className="w-[100px]">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {data.map((item) => (
-                        <TableRow key={item._id}>
-                            {columns.map((column) => (
-                                <TableCell
-                                    key={`${item._id}-${column.key as string}`}
-                                    style={{ maxWidth: column.width }}
-                                    className="whitespace-normal break-words"
-                                >
-                                    {item[column.key] as React.ReactNode}
-                                </TableCell>
-                            ))}
-                            <TableCell style={{ width: '70px' }}>
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" className="h-8 w-8 p-0">
-                                            <span className="sr-only">Open menu</span>
-                                            <MoreHorizontal className="h-4 w-4" />
+                        <React.Fragment key={item._id}>
+                            <TableRow>
+                                {columns.map((column) => (
+                                    <TableCell
+                                        key={`${item._id}-${column.key as string}`}
+                                        className={`whitespace-normal break-words ${column.hideOnMobile ? 'hidden md:table-cell' : ''}`}
+                                    >
+                                        {item[column.key] as React.ReactNode}
+                                    </TableCell>
+                                ))}
+                                <TableCell className="w-[100px]">
+                                    <div className="flex items-center justify-end space-x-2">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            onClick={() => toggleRowExpansion(item._id)}
+                                            aria-label={expandedRows.has(item._id) ? "Hide details" : "Show details"}
+                                            className="md:hidden"
+                                        >
+                                            {expandedRows.has(item._id) ? (
+                                                <ChevronUp className="h-4 w-4" />
+                                            ) : (
+                                                <ChevronDown className="h-4 w-4" />
+                                            )}
                                         </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                        <DropdownMenuItem onClick={() => onEdit(item)}>
-                                            Edit
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => onDelete(item._id)}>
-                                            Delete
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            </TableCell>
-                        </TableRow>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" size="icon" aria-label="Open menu">
+                                                    <MoreHorizontal className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuItem onClick={() => onEdit(item)}>
+                                                    Edit
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => onDelete(item._id)}>
+                                                    Delete
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                            {expandedRows.has(item._id) && (
+                                <TableRow className="md:hidden">
+                                    <TableCell colSpan={columns.length + 1}>
+                                        <div className="py-2 space-y-2">
+                                            {columns.filter(column => column.hideOnMobile).map((column) => (
+                                                <div key={column.key as string}>
+                                                    <strong>{column.header}:</strong> {item[column.key] as React.ReactNode}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </React.Fragment>
                     ))}
                 </TableBody>
             </Table>

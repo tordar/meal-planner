@@ -17,8 +17,8 @@ import {
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-    title: "Food Planner",
-    description: "Plan your meals and track your food",
+    title: "Meal Planner",
+    description: "Overview of meals",
 };
 
 export default function RootLayout({
