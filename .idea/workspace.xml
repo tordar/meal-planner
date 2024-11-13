@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d4efc041-f57a-43d2-9686-e4f80f2a4f94" name="Changes" comment="debug3" />
+    <list default="true" id="d4efc041-f57a-43d2-9686-e4f80f2a4f94" name="Changes" comment="remove debug elements" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -90,7 +90,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1731491916619</updated>
-      <workItem from="1731491917668" duration="13126000" />
+      <workItem from="1731491917668" duration="13632000" />
     </task>
     <task id="LOCAL-00001" summary="mobile view with dropdown items">
       <option name="closed" value="true" />
@@ -164,7 +164,23 @@
       <option name="project" value="LOCAL" />
       <updated>1731506729520</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="debug4">
+      <option name="closed" value="true" />
+      <created>1731507065711</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1731507065711</updated>
+    </task>
+    <task id="LOCAL-00011" summary="remove debug elements">
+      <option name="closed" value="true" />
+      <created>1731507296156</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1731507296156</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -181,6 +197,8 @@
     <MESSAGE value="debug" />
     <MESSAGE value="debug2" />
     <MESSAGE value="debug3" />
-    <option name="LAST_COMMIT_MESSAGE" value="debug3" />
+    <MESSAGE value="debug4" />
+    <MESSAGE value="remove debug elements" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove debug elements" />
   </component>
 </project>
