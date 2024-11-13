@@ -98,19 +98,19 @@ export default function MealTracker() {
   return (
       <div className="h-full flex flex-col bg-gray-100">
         <div className="p-6 flex flex-col h-full">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 mt-12 md:mt-0">
             <SearchBar
                 value={searchTerm}
                 onChange={handleSearch}
                 placeholder="Search meals..."
             />
-            <div className="flex space-x-4 text-sm text-gray-600">
+            <div className="flex space-x-4 text-sm text-gray-600 mt-4">
               <span>Total Meals: {meals.length}</span>
             </div>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm flex flex-col flex-grow overflow-hidden">
-            <div className="flex justify-between items-center p-4 border-b">
+          <div className="flex justify-between items-center p-4 border-b">
               <h1 className="text-2xl font-bold">Meals</h1>
 
               <div className="flex gap-2">
