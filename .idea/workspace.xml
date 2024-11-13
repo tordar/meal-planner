@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d4efc041-f57a-43d2-9686-e4f80f2a4f94" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/app/ideas/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/ideas/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
+    <list default="true" id="d4efc041-f57a-43d2-9686-e4f80f2a4f94" name="Changes" comment="mobile view with dropdown items">
+      <change afterPath="$PROJECT_DIR$/src/components/TextWithLinks.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/sides/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/sides/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/DataTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DataTable.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,12 +55,13 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "npm.build.executor": "Run",
     "npm.dev.executor": "Run",
     "ts.external.directory.path": "/Users/rodekors/Documents/GitHub/food-bank/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="npm.dev">
+  <component name="RunManager" selected="npm.build">
     <configuration name="build" type="js.build_tools.npm" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -95,8 +95,17 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1731491916619</updated>
-      <workItem from="1731491917668" duration="5012000" />
+      <workItem from="1731491917668" duration="7614000" />
     </task>
+    <task id="LOCAL-00001" summary="mobile view with dropdown items">
+      <option name="closed" value="true" />
+      <created>1731498445457</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1731498445457</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -104,5 +113,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="mobile view with dropdown items" />
+    <option name="LAST_COMMIT_MESSAGE" value="mobile view with dropdown items" />
   </component>
 </project>
