@@ -1,87 +1,46 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 
-
 export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
-    const { data: sessionData, status } = useSession()
     const [data, setData] = useState<T[]>([])
-    const [filteredData, setFilteredData] = useState<T[]>([])
-    const [newItem, setNewItem] = useState<Omit<T, '_id'>>({} as Omit<T, '_id'>)
+    const [newItem, setNewItem] = useState<Partial<T>>({})
     const [editingItem, setEditingItem] = useState<T | null>(null)
     const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState('')
-    const [error, setError] = useState<string | null>(null)
-    const [hasWriteAccess, setHasWriteAccess] = useState(false)
-
-    const checkWriteAccess = useCallback(async () => {
-        if (status === 'authenticated' && sessionData) {
-            try {
-                const response = await fetch('/api/check-write-access')
-                if (response.ok) {
-                    const { hasAccess } = await response.json()
-                    setHasWriteAccess(hasAccess)
-                } else {
-                    setHasWriteAccess(false)
-                }
-            } catch (error) {
-                console.error('Failed to check write access:', error)
-                setHasWriteAccess(false)
-            }
-        } else {
-            setHasWriteAccess(false)
-        }
-    }, [status, sessionData])
-
-    useEffect(() => {
-        checkWriteAccess()
-    }, [checkWriteAccess])
+    const { data: session, status } = useSession()
 
     const fetchData = useCallback(async () => {
-        if (status !== 'authenticated' || !sessionData) {
-            setIsLoading(false)
-            return
-        }
-
-        setIsLoading(true)
         try {
             const response = await fetch(apiEndpoint)
             if (!response.ok) {
-                throw new Error('Failed to fetch data')
+                throw new Error(`HTTP error! status: ${response.status}`)
             }
-            const responseData = await response.json()
-            setData(responseData.data)
-            setFilteredData(responseData.data)
+            const result = await response.json()
+            if (Array.isArray(result)) {
+                setData(result)
+            } else {
+                console.error('Received non-array data:', result)
+                setError('Received invalid data format')
+                setData([])
+            }
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred while fetching data')
+            console.error('Error fetching data:', err)
+            setError('An error occurred while fetching data')
+            setData([])
         } finally {
             setIsLoading(false)
         }
-    }, [apiEndpoint, status, sessionData])
+    }, [apiEndpoint])
 
     useEffect(() => {
         fetchData()
     }, [fetchData])
 
-    useEffect(() => {
-        if (searchTerm) {
-            const lowercasedSearch = searchTerm.toLowerCase()
-            setFilteredData(data.filter(item =>
-                Object.values(item).some(value =>
-                    value.toString().toLowerCase().includes(lowercasedSearch)
-                )
-            ))
-        } else {
-            setFilteredData(data)
-        }
-    }, [searchTerm, data])
+    const hasWriteAccess = status === "authenticated" && session?.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        if (!hasWriteAccess) {
-            setError('You do not have permission to modify data')
-            return
-        }
-        const { name, value } = e.target
+    const handleInputChange = (name: string, value: string | string[] | boolean) => {
         if (editingItem) {
             setEditingItem(prev => {
                 if (prev === null) return null
@@ -92,69 +51,40 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
         }
     }
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        if (!hasWriteAccess) {
-            setError('You do not have permission to modify data')
-            return
-        }
-        setError(null)
-        if (status !== 'authenticated' || !sessionData) {
-            setError('You must be logged in to perform this action')
-            return
-        }
-        setError(null)
+    const handleSubmit = async () => {
         try {
-            if (editingItem) {
-                const response = await fetch(`${apiEndpoint}/${editingItem._id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(editingItem)
-                })
+            const itemToSubmit = editingItem || newItem
+            const method = editingItem ? 'PUT' : 'POST'
+            const url = editingItem ? `${apiEndpoint}/${editingItem._id}` : apiEndpoint
 
-                if (!response.ok) {
-                    throw new Error('Failed to update item')
-                }
-            } else {
-                const response = await fetch(apiEndpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(newItem)
-                })
+            const response = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(itemToSubmit),
+            })
 
-                if (!response.ok) {
-                    throw new Error('Failed to create item')
-                }
+            if (!response.ok) {
+                throw new Error('Failed to submit data')
             }
 
-            setNewItem({} as Omit<T, '_id'>)
-            setEditingItem(null)
             await fetchData()
             setIsDialogOpen(false)
+            setNewItem({})
+            setEditingItem(null)
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred while submitting data')
+            console.error('Error submitting data:', err)
+            setError('An error occurred while submitting data')
         }
     }
 
     const handleEdit = (item: T) => {
-        if (!hasWriteAccess) {
-            setError('You do not have permission to modify data')
-            return
-        }
         setEditingItem(item)
         setIsDialogOpen(true)
     }
 
     const handleDelete = async (id: string) => {
-        if (!hasWriteAccess) {
-            setError('You do not have permission to modify data')
-            return
-        }
-        setError(null)
         try {
             const response = await fetch(`${apiEndpoint}/${id}`, {
                 method: 'DELETE',
@@ -166,59 +96,52 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
 
             await fetchData()
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred while deleting the item')
+            console.error('Error deleting item:', err)
+            setError('An error occurred while deleting the item')
         }
     }
 
-    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(e.target.value)
+    const handleSearch = (term: string) => {
+        setSearchTerm(term)
     }
 
-    const handleImport = async (importedData: Record<string, string>[]) => {
-        if (!hasWriteAccess) {
-            setError('You do not have permission to import data')
-            return
-        }
-        setIsLoading(true)
-        setError(null)
+    const handleImport = async (importedData: Partial<T>[]) => {
         try {
-            const response = await fetch(`${apiEndpoint}/bulk`, {
+            const response = await fetch(apiEndpoint + '/import', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(importedData)
+                body: JSON.stringify(importedData),
             })
 
             if (!response.ok) {
-                const errorData = await response.json()
-                throw new Error(errorData.error || 'Failed to import data')
+                throw new Error('Failed to import data')
             }
 
             await fetchData()
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An error occurred during import')
-        } finally {
-            setIsLoading(false)
+            console.error('Error importing data:', err)
+            setError('An error occurred while importing data')
         }
     }
 
     return {
-        data: filteredData,
+        data,
         newItem,
         editingItem,
         isLoading,
+        error,
         isDialogOpen,
         searchTerm,
-        error,
-        authStatus: status,
-        hasWriteAccess,
         setIsDialogOpen,
+        hasWriteAccess,
+        authStatus: status,
         handleInputChange,
         handleSubmit,
         handleEdit,
         handleDelete,
         handleSearch,
-        handleImport
+        handleImport,
     }
 }

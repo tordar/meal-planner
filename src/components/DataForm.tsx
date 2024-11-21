@@ -1,52 +1,100 @@
+import React from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-interface Field {
+export interface Field {
     name: string;
     label: string;
-    type: 'text' | 'textarea';
-    placeholder?: string;
+    type: 'text' | 'textarea' | 'checkbox' | 'select' | 'multiselect';
+    options?: { value: string; label: string }[];
     required?: boolean;
 }
 
-interface DataFormProps<T> {
+interface DataFormProps {
     fields: Field[];
-    values: T;
-    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onSubmit: (e: React.FormEvent) => void;
+    values: Record<string, string | string[] | boolean>;
+    onChange: (name: string, value: string | string[] | boolean) => void;
+    onSubmit: () => void;
     submitLabel: string;
 }
 
-export function DataForm<T>({ fields, values, onChange, onSubmit, submitLabel }: DataFormProps<T>) {
+export function DataForm({ fields, values, onChange, onSubmit, submitLabel }: DataFormProps) {
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        onSubmit();
+    };
+
+    const renderField = (field: Field) => {
+        switch (field.type) {
+            case 'text':
+                return (
+                    <Input
+                        id={field.name}
+                        name={field.name}
+                        value={values[field.name] as string || ''}
+                        onChange={(e) => onChange(field.name, e.target.value)}
+                        required={field.required}
+                    />
+                );
+            case 'textarea':
+                return (
+                    <Textarea
+                        id={field.name}
+                        name={field.name}
+                        value={values[field.name] as string || ''}
+                        onChange={(e) => onChange(field.name, e.target.value)}
+                        required={field.required}
+                    />
+                );
+            case 'checkbox':
+                return (
+                    <Checkbox
+                        id={field.name}
+                        name={field.name}
+                        checked={!!values[field.name]}
+                        onCheckedChange={(checked) => onChange(field.name, checked)}
+                    />
+                );
+            case 'select':
+            case 'multiselect':
+                return (
+                    <Select
+                        value={values[field.name] as string}
+                        onValueChange={(value) => onChange(field.name, value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {field.options?.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                );
+            default:
+                return null;
+        }
+    };
+
     return (
-        <form onSubmit={onSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
             {fields.map((field) => (
                 <div key={field.name} className="space-y-2">
-                    <Label htmlFor={field.name}>{field.label}</Label>
-                    {field.type === 'textarea' ? (
-                        <Textarea
-                            id={field.name}
-                            name={field.name}
-                            value={values[field.name as keyof T] as string}
-                            onChange={onChange}
-                            placeholder={field.placeholder}
-                            required={field.required}
-                        />
-                    ) : (
-                        <Input
-                            id={field.name}
-                            name={field.name}
-                            value={values[field.name as keyof T] as string}
-                            onChange={onChange}
-                            placeholder={field.placeholder}
-                            required={field.required}
-                        />
-                    )}
+                    <label htmlFor={field.name} className="text-sm font-medium">
+                        {field.label}
+                    </label>
+                    {renderField(field)}
                 </div>
             ))}
-            <Button type="submit">{submitLabel}</Button>
+            <Button type="submit" className="w-full">
+                {submitLabel}
+            </Button>
         </form>
-    )
+    );
 }

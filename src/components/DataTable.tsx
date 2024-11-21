@@ -40,14 +40,17 @@ export function DataTable<T extends { _id: string }>({
     };
 
     const renderCellContent = (item: T, column: Column<T>) => {
-        const content = item[column.key] as string;
-        return column.key === 'recipe' ? <TextWithLinks text={content} /> : content;
+        const content = item[column.key];
+        if (column.key === 'recipe') {
+            return <TextWithLinks text={content as string} />;
+        }
+        return content as React.ReactNode;
     };
 
     return (
-        <div className="relative h-full overflow-auto">
+        <div className="w-full overflow-x-auto">
             <Table>
-                <TableHeader className="sticky top-0 bg-white z-10">
+                <TableHeader>
                     <TableRow>
                         {columns.map((column) => (
                             <TableHead
@@ -72,7 +75,7 @@ export function DataTable<T extends { _id: string }>({
                                             column.hideOnMobile ? 'hidden md:table-cell' : ''
                                         } ${column.key === 'name' ? 'pr-20' : ''}`}
                                     >
-                                        <div className={`${column.key === 'name' ? 'font-medium' : ''} whitespace-pre-line`}>
+                                        <div className={`${column.key === 'name' ? 'font-medium' : ''} whitespace-normal break-words`}>
                                             {renderCellContent(item, column)}
                                         </div>
                                     </TableCell>

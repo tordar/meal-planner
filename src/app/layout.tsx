@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { NavLink } from '@/components/NavLink'
-import { Utensils, Book, Coffee, Menu } from 'lucide-react'
+import { Utensils, Book, Coffee, Menu, Calendar } from 'lucide-react'
 import { Providers } from './providers'
 import { SignInButton } from '@/components/SignInButton'
 import { Button } from "@/components/ui/button"
@@ -39,8 +39,7 @@ export default function RootLayout({
         <Providers>
             <div className="flex h-full">
                 {/* Mobile Header */}
-                <header
-                    className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white shadow-md z-50 flex items-center justify-between px-4">
+                <header className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white shadow-md z-50 flex items-center justify-between px-4">
                     <span className="text-xl font-semibold">Meal Planner</span>
                     <Sheet>
                         <SheetTrigger asChild>
@@ -56,6 +55,7 @@ export default function RootLayout({
                                 <NavItem href="/" icon={<Utensils size={20}/>} label="Meals"/>
                                 <NavItem href="/sides" icon={<Book size={20}/>} label="Sides"/>
                                 <NavItem href="/ideas" icon={<Coffee size={20}/>} label="Ideas"/>
+                                <NavItem href="/seasonal-calendar" icon={<Calendar size={20}/>} label="Seasonal Calendar"/>
                             </nav>
                             <div className="p-4 border-t">
                                 <SignInButton/>
@@ -76,6 +76,7 @@ export default function RootLayout({
                         <NavItem href="/" icon={<Utensils size={20}/>} label="Meals"/>
                         <NavItem href="/sides" icon={<Book size={20}/>} label="Sides"/>
                         <NavItem href="/ideas" icon={<Coffee size={20}/>} label="Ideas"/>
+                        <NavItem href="/seasonal-calendar" icon={<Calendar size={20}/>} label="Seasonal Calendar"/>
                     </nav>
 
                     {/* Sign In Button */}
@@ -86,8 +87,7 @@ export default function RootLayout({
 
                 {/* Main Content */}
                 <main className="flex-1 overflow-hidden flex flex-col">
-                    <div className="md:hidden h-16"/>
-                    {/* Spacer for mobile header */}
+                    <div className="md:hidden h-16"/> {/* Spacer for mobile header */}
                     <div className="flex-grow overflow-auto">
                         {children}
                     </div>
