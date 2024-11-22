@@ -138,7 +138,7 @@ export default function IdeaTracker() {
 
                     <div className="flex-grow overflow-auto">
                         <DataTable
-                            data={ideas}
+                            data={ideas || []}
                             columns={ideaColumns}
                             onEdit={handleEdit}
                             onDelete={(id) => handleDelete(id)}

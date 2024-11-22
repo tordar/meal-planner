@@ -141,7 +141,7 @@ export default function MealTracker() {
 
             <div className="flex-grow overflow-auto">
               <DataTable
-                  data={meals}
+                  data={meals || []}
                   columns={mealColumns}
                   onEdit={handleEdit}
                   onDelete={(id) => handleDelete(id)}

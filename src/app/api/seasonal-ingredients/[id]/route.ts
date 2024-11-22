@@ -11,16 +11,16 @@ export async function DELETE(
     const { id } = params
 
     try {
-        const result = await db.collection("seasonalingredients").deleteOne({ _id: new ObjectId(id) })
+        const result = await db.collection("seasonal-ingredients").deleteOne({ _id: new ObjectId(id) })
 
         if (result.deletedCount === 0) {
-            return NextResponse.json({ error: "Idea not found" }, { status: 404 })
+            return NextResponse.json({ error: "Ingredient not found" }, { status: 404 })
         }
 
-        return NextResponse.json({ message: "Idea deleted successfully" }, { status: 200 })
+        return NextResponse.json({ message: "Ingredient deleted successfully" }, { status: 200 })
     } catch (error) {
-        console.error('Error deleting idea:', error)
-        return NextResponse.json({ error: "Failed to delete idea" }, { status: 500 })
+        console.error('Error deleting Ingredient:', error)
+        return NextResponse.json({ error: "Failed to delete Ingredient" }, { status: 500 })
     }
 }
 
@@ -41,7 +41,7 @@ export async function PUT(
             return NextResponse.json({ error: "ID mismatch" }, { status: 400 })
         }
 
-        const result = await db.collection("seasonalingredients").updateOne(
+        const result = await db.collection("seasonal-ingredients").updateOne(
             { _id: new ObjectId(id) },
             { $set: updateData }
         )
@@ -66,15 +66,15 @@ export async function GET(
     const { id } = params
 
     try {
-        const idea = await db.collection("seasonalingredients").findOne({ _id: new ObjectId(id) })
+        const idea = await db.collection("seasonal-ingredients").findOne({ _id: new ObjectId(id) })
 
         if (!idea) {
-            return NextResponse.json({ error: "Idea not found" }, { status: 404 })
+            return NextResponse.json({ error: "Ingredient not found" }, { status: 404 })
         }
 
         return NextResponse.json(idea)
     } catch (error) {
-        console.error('Error fetching idea:', error)
-        return NextResponse.json({ error: "Failed to fetch idea" }, { status: 500 })
+        console.error('Error fetching Ingredient:', error)
+        return NextResponse.json({ error: "Failed to fetch Ingredient" }, { status: 500 })
     }
 }

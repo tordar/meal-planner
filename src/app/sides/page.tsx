@@ -133,7 +133,7 @@ export default function SideTracker() {
 
                     <div className="flex-grow overflow-auto">
                         <DataTable
-                            data={sides}
+                            data={sides || []}
                             columns={sideColumns}
                             onEdit={handleEdit}
                             onDelete={(id) => handleDelete(id)}

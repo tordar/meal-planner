@@ -156,7 +156,7 @@ export default function SeasonalCalendar() {
                         {['spring', 'summer', 'autumn', 'winter'].map((season) => (
                             <TabsContent key={season} value={season} className="flex-grow">
                                 <DataTable
-                                    data={seasonalIngredients}
+                                    data={seasonalIngredients || []}
                                     columns={ingredientColumns}
                                     onEdit={handleEdit}
                                     onDelete={(id) => handleDelete(id)}
