@@ -35,7 +35,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" className="h-full">
-        <body className={`${inter.className} h-full`}>
+        <body className={`${inter.className} h-full flex overflow-hidden`}>
         <Providers>
             <div className="flex h-full">
                 {/* Mobile Header */}
