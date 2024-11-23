@@ -88,7 +88,7 @@ export default function SideTracker() {
 
     return (
         <div className="h-full flex flex-col bg-gray-100">
-            <div className="p-6 flex flex-col h-full">
+            <div className="p-3 flex flex-col h-full">
                 <div
                     className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 mt-12 md:mt-0">
                     <SearchBar

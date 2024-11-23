@@ -79,7 +79,7 @@ export default function IdeaTracker() {
 
     return (
         <div className="flex flex-col h-full w-full bg-gray-100">
-            <div className="p-6 flex flex-col flex-grow">
+            <div className="p-3 flex flex-col flex-grow">
                 {error && (
                     <Alert variant="destructive" className="mb-6">
                         <AlertCircle className="h-4 w-4" />
