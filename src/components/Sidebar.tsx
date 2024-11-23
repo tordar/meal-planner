@@ -1,7 +1,11 @@
+'use client'
+
 import React from 'react'
-import { Utensils, Book, Coffee, Calendar, Menu } from 'lucide-react'
+import { Utensils, Book, Coffee, Calendar, Menu, Search } from 'lucide-react'
 import { SignInButton } from '@/components/SignInButton'
 import { NavItem } from '@/components/NavItem'
+import { Input } from "@/components/ui/input"
+import { useSearch } from '@/contexts/SearchContext'
 import {
     Sheet,
     SheetContent,
@@ -16,6 +20,23 @@ interface SidebarProps {
 }
 
 export function Sidebar({ isMobile = false }: SidebarProps) {
+    const { searchTerm, setSearchTerm } = useSearch()
+
+    const searchBar = (
+        <div className="px-4 py-2">
+            <div className="relative">
+                <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+                <Input
+                    type="search"
+                    placeholder="Search..."
+                    className="w-full pl-8 bg-white"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
+        </div>
+    )
+
     const navigation = (
         <nav className="flex-grow py-4">
             <NavItem href="/" icon={<Utensils size={20}/>} label="Meals"/>
@@ -37,6 +58,7 @@ export function Sidebar({ isMobile = false }: SidebarProps) {
                     <SheetHeader className="p-4 border-b">
                         <SheetTitle>Meal Planner</SheetTitle>
                     </SheetHeader>
+                    {searchBar}
                     {navigation}
                     <div className="p-4 border-t">
                         <SignInButton/>
@@ -51,6 +73,7 @@ export function Sidebar({ isMobile = false }: SidebarProps) {
             <div className="p-4 border-b">
                 <span className="text-xl font-semibold">Meal Planner</span>
             </div>
+            {searchBar}
             {navigation}
             <div className="p-4 border-t">
                 <SignInButton/>

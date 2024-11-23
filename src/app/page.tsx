@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { DataTable } from "@/components/DataTable"
 import { DataForm } from "@/components/DataForm"
-import { SearchBar } from "@/components/SearchBar"
 import { useDataManager } from "@/hooks/useDataManager"
 import { CSVImport } from "@/components/CsvImport"
 import { SignInButton } from '@/components/SignInButton'
+import { useSearch } from '@/contexts/SearchContext'
 
 interface Meal {
   _id: string;
@@ -41,7 +41,6 @@ export default function MealTracker() {
     editingItem,
     isLoading,
     isDialogOpen,
-    searchTerm,
     setIsDialogOpen,
     error,
     hasWriteAccess,
@@ -50,9 +49,10 @@ export default function MealTracker() {
     handleSubmit,
     handleEdit,
     handleDelete,
-    handleSearch,
     handleImport
   } = useDataManager<Meal>('/api/meals')
+
+  const { searchTerm } = useSearch()
 
   if (authStatus === "loading") {
     return (
@@ -96,17 +96,18 @@ export default function MealTracker() {
     )
   }
 
+  const filteredMeals = meals.filter(meal =>
+      Object.values(meal).some(value =>
+          String(value).toLowerCase().includes(searchTerm.toLowerCase())
+      )
+  )
+
   return (
       <div className="h-full flex flex-col bg-gray-100">
         <div className="p-3 flex flex-col h-full">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 mt-12 md:mt-0">
-            <SearchBar
-                value={searchTerm}
-                onChange={handleSearch}
-                placeholder="Search meals..."
-            />
             <div className="flex space-x-4 text-sm text-gray-600 mt-4">
-              <span>Total Meals: {meals.length}</span>
+              <span>Total Meals: {filteredMeals.length}</span>
             </div>
           </div>
 
@@ -142,7 +143,7 @@ export default function MealTracker() {
 
             <div className="flex-grow overflow-auto">
               <DataTable
-                  data={meals}
+                  data={filteredMeals}
                   columns={mealColumns}
                   onEdit={handleEdit}
                   onDelete={(id) => handleDelete(id)}

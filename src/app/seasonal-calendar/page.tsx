@@ -5,13 +5,13 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { DataTable } from "@/components/DataTable"
 import { DataForm } from "@/components/DataForm"
-import { SearchBar } from "@/components/SearchBar"
 import { useDataManager } from "@/hooks/useDataManager"
 import { CSVImport } from "@/components/CsvImport"
 import { SignInButton } from '@/components/SignInButton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle } from 'lucide-react'
+import { useSearch } from '@/contexts/SearchContext'
 
 interface SeasonalIngredient {
     _id: string;
@@ -50,7 +50,6 @@ export default function SeasonalCalendar() {
         editingItem,
         isLoading,
         isDialogOpen,
-        searchTerm,
         setIsDialogOpen,
         error,
         hasWriteAccess,
@@ -59,9 +58,10 @@ export default function SeasonalCalendar() {
         handleSubmit,
         handleEdit,
         handleDelete,
-        handleSearch,
         handleImport
     } = useDataManager<SeasonalIngredient>('/api/seasonal-ingredients')
+
+    const { searchTerm } = useSearch()
 
     const [currentSeason, setCurrentSeason] = useState<'spring' | 'summer' | 'autumn' | 'winter'>('spring')
 
@@ -106,12 +106,6 @@ export default function SeasonalCalendar() {
                     </Alert>
                 )}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-                    <SearchBar
-                        value={searchTerm}
-                        onChange={handleSearch}
-                        placeholder="Search ingredients..."
-                        className="w-full md:w-auto mb-4 md:mb-0"
-                    />
                     <div className="flex space-x-4 text-sm text-gray-600">
                         <span>Total Ingredients: {seasonalIngredients.length}</span>
                     </div>

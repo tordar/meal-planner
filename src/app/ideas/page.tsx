@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { DataTable } from "@/components/DataTable"
 import { DataForm } from "@/components/DataForm"
-import { SearchBar } from "@/components/SearchBar"
 import { useDataManager } from "@/hooks/useDataManager"
 import { CSVImport } from "@/components/CsvImport"
 import { SignInButton } from '@/components/SignInButton'
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle } from 'lucide-react'
+import { useSearch } from '@/contexts/SearchContext'
 
 interface Idea {
     _id: string;
@@ -42,7 +42,6 @@ export default function IdeaTracker() {
         editingItem,
         isLoading,
         isDialogOpen,
-        searchTerm,
         setIsDialogOpen,
         error,
         authStatus,
@@ -51,9 +50,10 @@ export default function IdeaTracker() {
         handleSubmit,
         handleEdit,
         handleDelete,
-        handleSearch,
         handleImport
     } = useDataManager<Idea>('/api/ideas')
+
+    const { searchTerm } = useSearch()
 
     if (authStatus === "unauthenticated") {
         return (
@@ -77,6 +77,12 @@ export default function IdeaTracker() {
         )
     }
 
+    const filteredIdeas = ideas.filter(idea =>
+        Object.values(idea).some(value =>
+            String(value).toLowerCase().includes(searchTerm.toLowerCase())
+        )
+    )
+
     return (
         <div className="flex flex-col h-full w-full bg-gray-100">
             <div className="p-3 flex flex-col flex-grow">
@@ -88,14 +94,8 @@ export default function IdeaTracker() {
                     </Alert>
                 )}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-                    <SearchBar
-                        value={searchTerm}
-                        onChange={handleSearch}
-                        placeholder="Search ideas..."
-                        className="w-full md:w-auto mb-4 md:mb-0"
-                    />
                     <div className="flex space-x-4 text-sm text-gray-600">
-                        <span>Total Ideas: {ideas.length}</span>
+                        <span>Total Ideas: {filteredIdeas.length}</span>
                     </div>
                 </div>
 
@@ -131,7 +131,7 @@ export default function IdeaTracker() {
 
                     <div className="flex-grow overflow-auto p-4">
                         <DataTable
-                            data={ideas}
+                            data={filteredIdeas}
                             columns={ideaColumns}
                             onEdit={handleEdit}
                             onDelete={(id) => handleDelete(id)}
