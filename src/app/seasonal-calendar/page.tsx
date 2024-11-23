@@ -18,6 +18,7 @@ interface SeasonalIngredient {
     name: string;
     seasons: ('spring' | 'summer' | 'autumn' | 'winter')[];
     description?: string;
+    [key: string]: string | string[] | undefined;
 }
 
 const ingredientFields = [
@@ -86,11 +87,17 @@ export default function SeasonalCalendar() {
         )
     }
 
-    const seasonalIngredients = ingredients.filter(ingredient => ingredient.seasons.includes(currentSeason))
+    const seasonalIngredients = ingredients.filter(ingredient =>
+        ingredient.seasons.includes(currentSeason) &&
+        (searchTerm === '' ||
+            Object.values(ingredient).some(value =>
+                String(value).toLowerCase().includes(searchTerm.toLowerCase())
+            ))
+    )
 
     return (
-        <div className="h-full flex flex-col bg-gray-100">
-            <div className="p-6 flex flex-col h-full">
+        <div className="flex flex-col h-full w-full bg-gray-100">
+            <div className="p-6 flex flex-col flex-grow">
                 {error && (
                     <Alert variant="destructive" className="mb-6">
                         <AlertCircle className="h-4 w-4" />
@@ -98,57 +105,54 @@ export default function SeasonalCalendar() {
                         <AlertDescription>{error}</AlertDescription>
                     </Alert>
                 )}
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 mt-12 md:mt-0">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
                     <SearchBar
                         value={searchTerm}
                         onChange={handleSearch}
                         placeholder="Search ingredients..."
+                        className="w-full md:w-auto mb-4 md:mb-0"
                     />
-                    <div className="flex space-x-4 text-sm text-gray-600 mt-4">
-                        <span>Total Ingredients: {ingredients.length}</span>
+                    <div className="flex space-x-4 text-sm text-gray-600">
+                        <span>Total Ingredients: {seasonalIngredients.length}</span>
                     </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-sm flex flex-col flex-grow overflow-hidden">
-                    <div className="flex justify-between items-center p-4 border-b">
-                        <h1 className="text-2xl font-bold">Seasonal Calendar</h1>
+                <div className="bg-white rounded-lg shadow-sm flex flex-col flex-grow">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center p-4 border-b">
+                        <h1 className="text-2xl font-bold mb-4 md:mb-0">Seasonal Calendar</h1>
 
-                        <div className="flex gap-2">
+                        <div className="flex flex-col md:flex-row gap-2">
                             {hasWriteAccess && (
-                                <CSVImport onImport={handleImport} fields={ingredientFields.map(field => field.name)}/>
+                                <>
+                                    <CSVImport onImport={handleImport} fields={ingredientFields.map(field => field.name)}/>
+                                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                        <DialogTrigger asChild>
+                                            <Button>Add New Ingredient</Button>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>{editingItem ? 'Edit Ingredient' : 'Add New Ingredient'}</DialogTitle>
+                                            </DialogHeader>
+                                            <DataForm
+                                                fields={ingredientFields}
+                                                values={editingItem || newIngredient}
+                                                onChange={handleInputChange}
+                                                onSubmit={handleSubmit}
+                                                submitLabel={editingItem ? 'Update Ingredient' : 'Add Ingredient'}
+                                            />
+                                        </DialogContent>
+                                    </Dialog>
+                                </>
                             )}
-                            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                                <DialogTrigger asChild>
-                                    {hasWriteAccess && (
-                                        <Button>Add New Ingredient</Button>
-                                    )}
-                                </DialogTrigger>
-                                <DialogContent>
-                                    <DialogHeader>
-                                        <DialogTitle>{editingItem ? 'Edit Ingredient' : 'Add New Ingredient'}</DialogTitle>
-                                    </DialogHeader>
-                                    <DataForm
-                                        fields={ingredientFields}
-                                        values={editingItem || newIngredient}
-                                        onChange={handleInputChange}
-                                        onSubmit={handleSubmit}
-                                        submitLabel={editingItem ? 'Update Ingredient' : 'Add Ingredient'}
-                                    />
-                                </DialogContent>
-                            </Dialog>
                         </div>
                     </div>
 
-                    <Tabs
-                        defaultValue="spring"
-                        className="flex-grow flex flex-col"
-                        onValueChange={(value) => setCurrentSeason(value as 'spring' | 'summer' | 'autumn' | 'winter')}
-                    >
-                        <TabsList className="flex justify-start p-2 bg-gray-100">
-                            <TabsTrigger value="spring" className="flex-1">Spring</TabsTrigger>
-                            <TabsTrigger value="summer" className="flex-1">Summer</TabsTrigger>
-                            <TabsTrigger value="autumn" className="flex-1">Autumn</TabsTrigger>
-                            <TabsTrigger value="winter" className="flex-1">Winter</TabsTrigger>
+                    <Tabs defaultValue="spring" className="flex-grow flex flex-col" onValueChange={(value) => setCurrentSeason(value as 'spring' | 'summer' | 'autumn' | 'winter')}>
+                        <TabsList className="grid w-full grid-cols-4">
+                            <TabsTrigger value="spring">Spring</TabsTrigger>
+                            <TabsTrigger value="summer">Summer</TabsTrigger>
+                            <TabsTrigger value="autumn">Autumn</TabsTrigger>
+                            <TabsTrigger value="winter">Winter</TabsTrigger>
                         </TabsList>
                         <TabsContent value={currentSeason} className="flex-grow overflow-auto p-4">
                             <DataTable

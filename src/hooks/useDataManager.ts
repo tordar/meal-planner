@@ -1,7 +1,12 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useSession } from 'next-auth/react'
 
-export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
+type DataItem = {
+    _id: string;
+    [key: string]: unknown;
+}
+
+export function useDataManager<T extends DataItem>(apiEndpoint: string) {
     const [data, setData] = useState<T[]>([])
     const [newItem, setNewItem] = useState<Partial<T>>({})
     const [editingItem, setEditingItem] = useState<T | null>(null)
@@ -40,11 +45,11 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
 
     const hasWriteAccess = status === "authenticated" && session?.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL
 
-    const handleInputChange = (name: string, value: string | string[] | boolean) => {
+    const handleInputChange = (name: string, value: unknown) => {
         if (editingItem) {
             setEditingItem(prev => {
                 if (prev === null) return null
-                return { ...prev, [name]: value } as T
+                return { ...prev, [name]: value }
             })
         } else {
             setNewItem(prev => ({ ...prev, [name]: value }))
@@ -126,8 +131,16 @@ export function useDataManager<T extends { _id: string }>(apiEndpoint: string) {
         }
     }
 
+    const filteredData = useMemo(() => {
+        return data.filter((item) =>
+            Object.values(item).some((value) =>
+                String(value).toLowerCase().includes(searchTerm.toLowerCase())
+            )
+        )
+    }, [data, searchTerm])
+
     return {
-        data,
+        data: filteredData,
         newItem,
         editingItem,
         isLoading,

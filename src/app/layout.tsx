@@ -49,7 +49,7 @@ export default function RootLayout({
                         </SheetTrigger>
                         <SheetContent side="left" className="w-64 p-0">
                             <SheetHeader className="p-4 border-b">
-                                <SheetTitle>Food Planner</SheetTitle>
+                                <SheetTitle>Meal Planner</SheetTitle>
                             </SheetHeader>
                             <nav className="flex-grow py-4">
                                 <NavItem href="/" icon={<Utensils size={20}/>} label="Meals"/>
