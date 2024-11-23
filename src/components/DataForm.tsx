@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-export interface Field {
+interface Field {
     name: string;
     label: string;
     type: 'text' | 'textarea' | 'checkbox' | 'select' | 'multiselect';
@@ -15,8 +15,8 @@ export interface Field {
 
 interface DataFormProps {
     fields: Field[];
-    values: Record<string, string | string[] | boolean>;
-    onChange: (name: string, value: string | string[] | boolean) => void;
+    values: Record<string, string | boolean | string[] | undefined>;
+    onChange: (name: string, value: string | boolean | string[]) => void;
     onSubmit: () => void;
     submitLabel: string;
 }
@@ -27,74 +27,80 @@ export function DataForm({ fields, values, onChange, onSubmit, submitLabel }: Da
         onSubmit();
     };
 
-    const renderField = (field: Field) => {
-        switch (field.type) {
-            case 'text':
-                return (
-                    <Input
-                        id={field.name}
-                        name={field.name}
-                        value={values[field.name] as string || ''}
-                        onChange={(e) => onChange(field.name, e.target.value)}
-                        required={field.required}
-                    />
-                );
-            case 'textarea':
-                return (
-                    <Textarea
-                        id={field.name}
-                        name={field.name}
-                        value={values[field.name] as string || ''}
-                        onChange={(e) => onChange(field.name, e.target.value)}
-                        required={field.required}
-                    />
-                );
-            case 'checkbox':
-                return (
-                    <Checkbox
-                        id={field.name}
-                        name={field.name}
-                        checked={!!values[field.name]}
-                        onCheckedChange={(checked) => onChange(field.name, checked)}
-                    />
-                );
-            case 'select':
-            case 'multiselect':
-                return (
-                    <Select
-                        value={values[field.name] as string}
-                        onValueChange={(value) => onChange(field.name, value)}
-                    >
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {field.options?.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                );
-            default:
-                return null;
-        }
-    };
-
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             {fields.map((field) => (
                 <div key={field.name} className="space-y-2">
-                    <label htmlFor={field.name} className="text-sm font-medium">
+                    <label htmlFor={field.name} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                         {field.label}
                     </label>
-                    {renderField(field)}
+                    {field.type === 'text' && (
+                        <Input
+                            type="text"
+                            id={field.name}
+                            name={field.name}
+                            value={values[field.name] as string || ''}
+                            onChange={(e) => onChange(field.name, e.target.value)}
+                            required={field.required}
+                        />
+                    )}
+                    {field.type === 'textarea' && (
+                        <Textarea
+                            id={field.name}
+                            name={field.name}
+                            value={values[field.name] as string || ''}
+                            onChange={(e) => onChange(field.name, e.target.value)}
+                            required={field.required}
+                        />
+                    )}
+                    {field.type === 'checkbox' && (
+                        <Checkbox
+                            id={field.name}
+                            name={field.name}
+                            checked={values[field.name] as boolean || false}
+                            onCheckedChange={(checked) => onChange(field.name, checked)}
+                        />
+                    )}
+                    {field.type === 'select' && field.options && (
+                        <Select
+                            value={values[field.name] as string}
+                            onValueChange={(value) => onChange(field.name, value)}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select an option" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {field.options.map((option) => (
+                                    <SelectItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    )}
+                    {field.type === 'multiselect' && field.options && (
+                        <div className="space-y-2">
+                            {field.options.map((option) => (
+                                <div key={option.value} className="flex items-center space-x-2">
+                                    <Checkbox
+                                        id={`${field.name}-${option.value}`}
+                                        checked={(values[field.name] as string[] || []).includes(option.value)}
+                                        onCheckedChange={(checked) => {
+                                            const currentValues = values[field.name] as string[] || [];
+                                            const newValues = checked
+                                                ? [...currentValues, option.value]
+                                                : currentValues.filter((v) => v !== option.value);
+                                            onChange(field.name, newValues);
+                                        }}
+                                    />
+                                    <label htmlFor={`${field.name}-${option.value}`}>{option.label}</label>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             ))}
-            <Button type="submit" className="w-full">
-                {submitLabel}
-            </Button>
+            <Button type="submit">{submitLabel}</Button>
         </form>
-    );
+    )
 }

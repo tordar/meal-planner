@@ -16,6 +16,7 @@ interface Sides {
     description: string;
     notes: string;
     recipe: string;
+    [key: string]: string | string[] | undefined;
 }
 
 const sideFields = [
