@@ -49,14 +49,13 @@ export function DataTable<T extends { _id: string }>({
 
     return (
         <div className="w-full overflow-x-auto">
-            <Table>
+            <Table className="w-full">
                 <TableHeader>
                     <TableRow>
                         {columns.map((column) => (
                             <TableHead
                                 key={column.key as string}
-                                className={column.hideOnMobile ? 'hidden md:table-cell' : ''}
-                                style={{ width: column.width }}
+                                className={`${column.hideOnMobile ? 'hidden md:table-cell' : ''} ${column.width}`}
                             >
                                 {column.header}
                             </TableHead>
@@ -74,7 +73,7 @@ export function DataTable<T extends { _id: string }>({
                                             key={`${item._id}-${column.key as string}`}
                                             className={`${
                                                 column.hideOnMobile ? 'hidden md:table-cell' : ''
-                                            } ${column.key === 'name' ? 'pr-20' : ''}`}
+                                            } ${column.key === 'name' ? 'pr-20' : ''} ${column.width}`}
                                         >
                                             <div className={`${column.key === 'name' ? 'font-medium' : ''} whitespace-normal break-words`}>
                                                 {renderCellContent(item, column)}
