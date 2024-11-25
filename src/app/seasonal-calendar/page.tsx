@@ -105,44 +105,44 @@ export default function SeasonalCalendar() {
                         <AlertDescription>{error}</AlertDescription>
                     </Alert>
                 )}
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                    <div className="flex space-x-4 text-sm text-gray-600">
-                        <span>Total Ingredients: {seasonalIngredients.length}</span>
-                    </div>
-                    <div className="flex flex-col md:flex-row gap-2 mt-2 md:mt-0">
-                        {hasWriteAccess && (
-                            <>
-                                <CSVImport onImport={handleImport} fields={ingredientFields.map(field => field.name)}/>
-                                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                                    <DialogTrigger asChild>
-                                        <Button>Add New Ingredient</Button>
-                                    </DialogTrigger>
-                                    <DialogContent>
-                                        <DialogHeader>
-                                            <DialogTitle>{editingItem ? 'Edit Ingredient' : 'Add New Ingredient'}</DialogTitle>
-                                        </DialogHeader>
-                                        <DataForm
-                                            fields={ingredientFields}
-                                            values={editingItem || newIngredient}
-                                            onChange={handleInputChange}
-                                            onSubmit={handleSubmit}
-                                            submitLabel={editingItem ? 'Update Ingredient' : 'Add Ingredient'}
-                                        />
-                                    </DialogContent>
-                                </Dialog>
-                            </>
-                        )}
-                    </div>
-                </div>
 
                 <div className="bg-white rounded-lg shadow-sm flex flex-col flex-grow overflow-hidden">
                     <div className="p-4 border-b">
-                        <h1 className="text-2xl font-bold">Seasonal Calendar</h1>
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <h1 className="text-2xl font-bold">Seasonal Calendar</h1>
+                                <div className="text-sm text-gray-600 mt-1">
+                                    Total Ingredients: {seasonalIngredients.length}
+                                </div>
+                            </div>
+                            {hasWriteAccess && (
+                                <div className="flex flex-col sm:flex-row gap-2 sm:mt-0">
+                                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                        <DialogTrigger asChild>
+                                            <Button>Add New Ingredient</Button>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>{editingItem ? 'Edit Ingredient' : 'Add New Ingredient'}</DialogTitle>
+                                            </DialogHeader>
+                                            <DataForm
+                                                fields={ingredientFields}
+                                                values={editingItem || newIngredient}
+                                                onChange={handleInputChange}
+                                                onSubmit={handleSubmit}
+                                                submitLabel={editingItem ? 'Update Ingredient' : 'Add Ingredient'}
+                                            />
+                                        </DialogContent>
+                                    </Dialog>
+                                    <CSVImport onImport={handleImport}
+                                               fields={ingredientFields.map(field => field.name)}/>
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <div className="flex-grow overflow-auto">
                         <Tabs defaultValue="spring" className="flex flex-col flex-grow"
                               onValueChange={(value) => setCurrentSeason(value as 'spring' | 'summer' | 'autumn' | 'winter')}>
-
                             <TabsList className="grid w-full grid-cols-4">
                                 <TabsTrigger value="spring">Spring</TabsTrigger>
                                 <TabsTrigger value="summer">Summer</TabsTrigger>
@@ -150,7 +150,6 @@ export default function SeasonalCalendar() {
                                 <TabsTrigger value="winter">Winter</TabsTrigger>
                             </TabsList>
                             <TabsContent value={currentSeason}>
-
                                 <DataTable
                                     data={seasonalIngredients}
                                     columns={ingredientColumns}
@@ -158,11 +157,10 @@ export default function SeasonalCalendar() {
                                     onDelete={(id) => handleDelete(id)}
                                 />
                             </TabsContent>
-                   
-                </Tabs>
+                        </Tabs>
                     </div>
+                </div>
             </div>
         </div>
-</div>
     )
 }

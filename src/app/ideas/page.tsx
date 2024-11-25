@@ -93,50 +93,52 @@ export default function IdeaTracker() {
                         <AlertDescription>{error}</AlertDescription>
                     </Alert>
                 )}
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                    <div className="flex space-x-4 text-sm text-gray-600">
-                        <span>Total Ideas: {filteredIdeas.length}</span>
-                    </div>
-                    <div className="flex flex-col md:flex-row gap-2 mt-2 md:mt-0">
-                        {hasWriteAccess && (
-                            <>
-                                <CSVImport onImport={handleImport} fields={ideaFields.map(field => field.name)}/>
-                                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                                    <DialogTrigger asChild>
-                                        <Button>Add New Idea</Button>
-                                    </DialogTrigger>
-                                    <DialogContent>
-                                        <DialogHeader>
-                                            <DialogTitle>{editingItem ? 'Edit Idea' : 'Add New Idea'}</DialogTitle>
-                                        </DialogHeader>
-                                        <DataForm
-                                            fields={ideaFields}
-                                            values={editingItem || newIdea}
-                                            onChange={handleInputChange}
-                                            onSubmit={handleSubmit}
-                                            submitLabel={editingItem ? 'Update Idea' : 'Add Idea'}
-                                        />
-                                    </DialogContent>
-                                </Dialog>
-                            </>
-                        )}
-                    </div>
-                </div>
+
 
                 <div className="bg-white rounded-lg shadow-sm flex flex-col flex-grow overflow-hidden">
                     <div className="p-4 border-b">
-                        <h1 className="text-2xl font-bold">Ideas</h1>
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <h1 className="text-2xl font-bold">Ideas</h1>
+                                <div className="text-sm text-gray-600 mt-1">
+                                    <span>Total Ideas: {filteredIdeas.length}</span>
+                                </div>
+                            </div>
+                                    {hasWriteAccess && (
+                                        <div className="flex flex-col sm:flex-row gap-2 sm:mt-0">
+                                            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                                <DialogTrigger asChild>
+                                                    <Button>Add New Idea</Button>
+                                                </DialogTrigger>
+                                                <DialogContent>
+                                                    <DialogHeader>
+                                                        <DialogTitle>{editingItem ? 'Edit Idea' : 'Add New Idea'}</DialogTitle>
+                                                    </DialogHeader>
+                                                    <DataForm
+                                                        fields={ideaFields}
+                                                        values={editingItem || newIdea}
+                                                        onChange={handleInputChange}
+                                                        onSubmit={handleSubmit}
+                                                        submitLabel={editingItem ? 'Update Idea' : 'Add Idea'}
+                                                    />
+                                                </DialogContent>
+                                            </Dialog>
+                                            <CSVImport onImport={handleImport}
+                                                       fields={ideaFields.map(field => field.name)}/>
+                                        </div>
+                                    )}
+                        </div>
                     </div>
                     <div className="flex-grow overflow-auto">
-                        <DataTable
-                            data={filteredIdeas}
-                            columns={ideaColumns}
-                            onEdit={handleEdit}
-                            onDelete={(id) => handleDelete(id)}
-                        />
+                                <DataTable
+                                    data={filteredIdeas}
+                                    columns={ideaColumns}
+                                    onEdit={handleEdit}
+                                    onDelete={(id) => handleDelete(id)}
+                                />
+                            </div>
+                        </div>
                     </div>
-                </div>
             </div>
-        </div>
-    )
-}
+            )
+            }
