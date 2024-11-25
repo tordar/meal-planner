@@ -8,6 +8,8 @@ import { DataForm } from "@/components/DataForm"
 import { useDataManager } from "@/hooks/useDataManager"
 import { CSVImport } from "@/components/CsvImport"
 import { SignInButton } from '@/components/SignInButton'
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { AlertCircle } from 'lucide-react'
 import { useSearch } from '@/contexts/SearchContext'
 
 interface Meal {
@@ -16,7 +18,6 @@ interface Meal {
   description: string;
   notes: string;
   recipe: string;
-  time: string;
   [key: string]: string | string[] | undefined;
 }
 
@@ -24,7 +25,7 @@ const mealFields = [
   { name: 'name', label: 'Meal Name', type: 'text' as const, required: true },
   { name: 'description', label: 'Description', type: 'text' as const },
   { name: 'notes', label: 'Notes', type: 'textarea' as const },
-  { name: 'recipe', label: 'Recipe', type: 'textarea' as const}
+  { name: 'recipe', label: 'Recipe', type: 'textarea' as const }
 ]
 
 const mealColumns: Array<{key: keyof Meal; header: string; width: string; hideOnMobile: boolean}> = [
@@ -43,8 +44,8 @@ export default function MealTracker() {
     isDialogOpen,
     setIsDialogOpen,
     error,
-    hasWriteAccess,
     authStatus,
+    hasWriteAccess,
     handleInputChange,
     handleSubmit,
     handleEdit,
@@ -54,19 +55,9 @@ export default function MealTracker() {
 
   const { searchTerm } = useSearch()
 
-  if (authStatus === "loading") {
-    return (
-        <div className="flex items-center justify-center h-full">
-          <div className="text-center">
-            <p className="text-xl">Loading...</p>
-          </div>
-        </div>
-    )
-  }
-
   if (authStatus === "unauthenticated") {
     return (
-        <div className="flex items-center justify-center flex-grow">
+        <div className="flex items-center justify-center h-full">
           <div className="text-center">
             <h1 className="text-2xl font-bold mb-4">Welcome to Food Planner</h1>
             <p className="mb-4">Please sign in to access your meals.</p>
@@ -78,19 +69,9 @@ export default function MealTracker() {
 
   if (isLoading) {
     return (
-        <div className="flex items-center justify-center flex-grow">
+        <div className="flex items-center justify-center h-full">
           <div className="text-center">
             <p className="text-xl">Loading meals...</p>
-          </div>
-        </div>
-    )
-  }
-
-  if (error) {
-    return (
-        <div className="flex items-center justify-center flex-grow">
-          <div className="text-center">
-            <p className="text-xl text-red-500">Error: {error}</p>
           </div>
         </div>
     )
@@ -103,44 +84,49 @@ export default function MealTracker() {
   )
 
   return (
-      <div className="h-full flex flex-col bg-gray-100">
-        <div className="p-3 flex flex-col h-full">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-            <div className="flex space-x-4 text-sm text-gray-600 mt-4">
+      <div className="flex flex-col h-full bg-gray-100">
+        <div className="p-4 flex flex-col flex-grow overflow-hidden">
+          {error && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+          )}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+            <div className="flex space-x-4 text-sm text-gray-600">
               <span>Total Meals: {filteredMeals.length}</span>
+            </div>
+            <div className="flex flex-col md:flex-row gap-2 mt-2 md:mt-0">
+              {hasWriteAccess && (
+                  <>
+                    <CSVImport onImport={handleImport} fields={mealFields.map(field => field.name)}/>
+                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                      <DialogTrigger asChild>
+                        <Button>Add New Meal</Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>{editingItem ? 'Edit Meal' : 'Add New Meal'}</DialogTitle>
+                        </DialogHeader>
+                        <DataForm
+                            fields={mealFields}
+                            values={editingItem || newMeal}
+                            onChange={handleInputChange}
+                            onSubmit={handleSubmit}
+                            submitLabel={editingItem ? 'Update Meal' : 'Add Meal'}
+                        />
+                      </DialogContent>
+                    </Dialog>
+                  </>
+              )}
             </div>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm flex flex-col flex-grow overflow-hidden">
-            <div className="flex justify-between items-center p-4 border-b">
+            <div className="p-4 border-b">
               <h1 className="text-2xl font-bold">Meals</h1>
-
-              <div className="flex gap-2">
-                {hasWriteAccess && (
-                    <CSVImport onImport={handleImport} fields={mealFields.map(field => field.name)}/>
-                )}
-                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                  <DialogTrigger asChild>
-                    {hasWriteAccess && (
-                        <Button>Add New Meal</Button>
-                    )}
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>{editingItem ? 'Edit Meal' : 'Add New Meal'}</DialogTitle>
-                    </DialogHeader>
-                    <DataForm
-                        fields={mealFields}
-                        values={editingItem || newMeal}
-                        onChange={handleInputChange}
-                        onSubmit={handleSubmit}
-                        submitLabel={editingItem ? 'Update Meal' : 'Add Meal'}
-                    />
-                  </DialogContent>
-                </Dialog>
-              </div>
             </div>
-
             <div className="flex-grow overflow-auto">
               <DataTable
                   data={filteredMeals}

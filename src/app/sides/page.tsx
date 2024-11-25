@@ -1,16 +1,18 @@
 'use client'
 
+import React from 'react'
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { DataTable } from "@/components/DataTable"
 import { DataForm } from "@/components/DataForm"
 import { useDataManager } from "@/hooks/useDataManager"
-import {CSVImport} from "@/components/CsvImport";
-import {SignInButton} from "@/components/SignInButton";
-import React from "react";
-import {useSearch} from "@/contexts/SearchContext";
+import { CSVImport } from "@/components/CsvImport"
+import { SignInButton } from '@/components/SignInButton'
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { AlertCircle } from 'lucide-react'
+import { useSearch } from '@/contexts/SearchContext'
 
-interface Sides {
+interface Side {
     _id: string;
     name: string;
     description: string;
@@ -26,15 +28,14 @@ const sideFields = [
     { name: 'recipe', label: 'Recipe', type: 'textarea' as const }
 ]
 
-const sideColumns: Array<{key: keyof Sides; header: string; width: string; hideOnMobile: boolean}> = [
+const sideColumns: Array<{key: keyof Side; header: string; width: string; hideOnMobile: boolean}> = [
     { key: 'name', header: 'Name', width: 'auto', hideOnMobile: false },
-    { key: 'description', header: 'Description', width: '25%', hideOnMobile: true},
+    { key: 'description', header: 'Description', width: '25%', hideOnMobile: true },
     { key: 'notes', header: 'Notes', width: '25%', hideOnMobile: true },
     { key: 'recipe', header: 'Recipe', width: '25%', hideOnMobile: true }
 ]
 
 export default function SideTracker() {
-
     const {
         data: sides,
         newItem: newSide,
@@ -50,36 +51,27 @@ export default function SideTracker() {
         handleEdit,
         handleDelete,
         handleImport
-    } = useDataManager<Sides>('/api/sides')
+    } = useDataManager<Side>('/api/sides')
 
     const { searchTerm } = useSearch()
-    
+
     if (authStatus === "unauthenticated") {
         return (
-            <div className="flex items-center justify-center flex-grow">
+            <div className="flex items-center justify-center h-full">
                 <div className="text-center">
                     <h1 className="text-2xl font-bold mb-4">Welcome to Food Planner</h1>
-                    <p className="mb-4">Please sign in to access your meals.</p>
+                    <p className="mb-4">Please sign in to access your sides.</p>
                     <SignInButton />
                 </div>
             </div>
         )
     }
+
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center flex-grow">
+            <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                    <p className="text-xl">Loading meals...</p>
-                </div>
-            </div>
-        )
-    }
-
-    if (error) {
-        return (
-            <div className="flex items-center justify-center flex-grow">
-                <div className="text-center">
-                    <p className="text-xl text-red-500">Error: {error}</p>
+                    <p className="text-xl">Loading sides...</p>
                 </div>
             </div>
         )
@@ -92,45 +84,49 @@ export default function SideTracker() {
     )
 
     return (
-        <div className="h-full flex flex-col bg-gray-100">
-            <div className="p-3 flex flex-col h-full">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-                    <div className="flex space-x-4 text-sm text-gray-600 mt-4">
-                        <span>Sides: {filteredSides.length}</span>
+        <div className="flex flex-col h-full bg-gray-100">
+            <div className="p-4 flex flex-col flex-grow overflow-hidden">
+                {error && (
+                    <Alert variant="destructive" className="mb-4">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertTitle>Error</AlertTitle>
+                        <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                )}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                    <div className="flex space-x-4 text-sm text-gray-600">
+                        <span>Total Sides: {filteredSides.length}</span>
+                    </div>
+                    <div className="flex flex-col md:flex-row gap-2 mt-2 md:mt-0">
+                        {hasWriteAccess && (
+                            <>
+                                <CSVImport onImport={handleImport} fields={sideFields.map(field => field.name)}/>
+                                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                    <DialogTrigger asChild>
+                                        <Button>Add New Side</Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>{editingItem ? 'Edit Side' : 'Add New Side'}</DialogTitle>
+                                        </DialogHeader>
+                                        <DataForm
+                                            fields={sideFields}
+                                            values={editingItem || newSide}
+                                            onChange={handleInputChange}
+                                            onSubmit={handleSubmit}
+                                            submitLabel={editingItem ? 'Update Side' : 'Add Side'}
+                                        />
+                                    </DialogContent>
+                                </Dialog>
+                            </>
+                        )}
                     </div>
                 </div>
 
                 <div className="bg-white rounded-lg shadow-sm flex flex-col flex-grow overflow-hidden">
-                    <div className="flex justify-between items-center p-4 border-b">
+                    <div className="p-4 border-b">
                         <h1 className="text-2xl font-bold">Sides</h1>
-
-                        <div className="flex gap-2">
-                            {hasWriteAccess && (
-                                <CSVImport onImport={handleImport} fields={sideFields.map(field => field.name)}/>
-                            )}
-                            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                                <DialogTrigger asChild>
-                                    {hasWriteAccess && (
-                                        <Button>Add New Side</Button>
-                                    )}
-                                </DialogTrigger>
-                                <DialogContent>
-                                    <DialogHeader>
-                                        <DialogTitle>{editingItem ? 'Edit Side' : 'Add New Side'}</DialogTitle>
-                                    </DialogHeader>
-                                    <DataForm
-                                        fields={sideFields}
-                                        values={editingItem || newSide}
-                                        onChange={handleInputChange}
-                                        onSubmit={handleSubmit}
-                                        submitLabel={editingItem ? 'Update Side' : 'Add Side'}
-                                    />
-                                </DialogContent>
-                            </Dialog>
-                        </div>
                     </div>
-
-
                     <div className="flex-grow overflow-auto">
                         <DataTable
                             data={filteredSides}
@@ -142,6 +138,5 @@ export default function SideTracker() {
                 </div>
             </div>
         </div>
-
     )
 }
