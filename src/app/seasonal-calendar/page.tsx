@@ -139,24 +139,30 @@ export default function SeasonalCalendar() {
                     <div className="p-4 border-b">
                         <h1 className="text-2xl font-bold">Seasonal Calendar</h1>
                     </div>
-                    <Tabs defaultValue="spring" className="flex flex-col flex-grow" onValueChange={(value) => setCurrentSeason(value as 'spring' | 'summer' | 'autumn' | 'winter')}>
-                        <TabsList className="grid w-full grid-cols-4">
-                            <TabsTrigger value="spring">Spring</TabsTrigger>
-                            <TabsTrigger value="summer">Summer</TabsTrigger>
-                            <TabsTrigger value="autumn">Autumn</TabsTrigger>
-                            <TabsTrigger value="winter">Winter</TabsTrigger>
-                        </TabsList>
-                        <TabsContent value={currentSeason} className="flex-grow overflow-auto">
-                            <DataTable
-                                data={seasonalIngredients}
-                                columns={ingredientColumns}
-                                onEdit={handleEdit}
-                                onDelete={(id) => handleDelete(id)}
-                            />
-                        </TabsContent>
-                    </Tabs>
-                </div>
+                    <div className="flex-grow overflow-auto">
+                        <Tabs defaultValue="spring" className="flex flex-col flex-grow"
+                              onValueChange={(value) => setCurrentSeason(value as 'spring' | 'summer' | 'autumn' | 'winter')}>
+
+                            <TabsList className="grid w-full grid-cols-4">
+                                <TabsTrigger value="spring">Spring</TabsTrigger>
+                                <TabsTrigger value="summer">Summer</TabsTrigger>
+                                <TabsTrigger value="autumn">Autumn</TabsTrigger>
+                                <TabsTrigger value="winter">Winter</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value={currentSeason}>
+
+                                <DataTable
+                                    data={seasonalIngredients}
+                                    columns={ingredientColumns}
+                                    onEdit={handleEdit}
+                                    onDelete={(id) => handleDelete(id)}
+                                />
+                            </TabsContent>
+                   
+                </Tabs>
+                    </div>
             </div>
         </div>
+</div>
     )
 }

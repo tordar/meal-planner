@@ -16,7 +16,6 @@ export const metadata: Metadata = {
     ],
 };
 
-
 export const viewport: Viewport = {
     width: "device-width",
     initialScale: 1,
@@ -31,10 +30,10 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" className="h-full">
-        <body className={`${inter.className} h-full flex overflow-hidden`}>
+        <body className={`${inter.className} h-full overflow-hidden`}>
         <Providers>
             <SearchProvider>
-                <div className="flex h-full w-full">
+                <div className="flex h-full">
                     {/* Mobile Header */}
                     <header className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white shadow-md z-50 flex items-center justify-between px-4">
                         <span className="text-xl font-semibold">Meal Planner</span>
@@ -45,9 +44,9 @@ export default function RootLayout({
                     <Sidebar />
 
                     {/* Main Content */}
-                    <main className="flex-1 overflow-hidden flex flex-col">
+                    <main className="flex-1 overflow-hidden flex flex-col w-full">
                         <div className="md:hidden h-16"/> {/* Spacer for mobile header */}
-                        <div className="flex-1 overflow-y-auto">
+                        <div className="flex-1 overflow-auto">
                             {children}
                         </div>
                     </main>
