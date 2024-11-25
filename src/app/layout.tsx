@@ -10,7 +10,12 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
     title: "Meal Planner",
     description: "Overview of meals",
+    icons: [
+        { rel: 'icon', url: '/favicon.ico' },
+        { rel: 'apple-touch-icon', url: '/apple-touch-icon.png' },
+    ],
 };
+
 
 export const viewport: Viewport = {
     width: "device-width",
