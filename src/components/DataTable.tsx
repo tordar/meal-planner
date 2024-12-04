@@ -44,6 +44,9 @@ export function DataTable<T extends { _id: string }>({
         if (column.key === 'recipe') {
             return <TextWithLinks text={content as string} />;
         }
+        if (typeof content === 'string' && content.includes('\n')) {
+            return <span className="whitespace-pre-wrap">{content}</span>;
+        }
         return content as React.ReactNode;
     };
 

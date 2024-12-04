@@ -16,6 +16,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -58,7 +59,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="npm.build">
+  <component name="RunManager" selected="npm.dev">
     <configuration name="build" type="js.build_tools.npm" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -94,6 +95,8 @@
       <updated>1731491916619</updated>
       <workItem from="1731491917668" duration="18508000" />
       <workItem from="1731583795467" duration="642000" />
+      <workItem from="1732184230850" duration="31471000" />
+      <workItem from="1732614176814" duration="1328000" />
     </task>
     <task id="LOCAL-00001" summary="mobile view with dropdown items">
       <option name="closed" value="true" />
@@ -207,7 +210,119 @@
       <option name="project" value="LOCAL" />
       <updated>1731508910749</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="added seasonal calendar">
+      <option name="closed" value="true" />
+      <created>1732186892112</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1732186892112</updated>
+    </task>
+    <task id="LOCAL-00016" summary="added unversioned files">
+      <option name="closed" value="true" />
+      <created>1732187124202</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1732187124202</updated>
+    </task>
+    <task id="LOCAL-00017" summary="updated api endpoint for id">
+      <option name="closed" value="true" />
+      <created>1732269839898</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1732269839898</updated>
+    </task>
+    <task id="LOCAL-00018" summary="fixed overflow issue">
+      <option name="closed" value="true" />
+      <created>1732358207349</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1732358207349</updated>
+    </task>
+    <task id="LOCAL-00019" summary="fixed width overflow issue in seasons">
+      <option name="closed" value="true" />
+      <created>1732374641245</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1732374641245</updated>
+    </task>
+    <task id="LOCAL-00020" summary="fixed search functionality">
+      <option name="closed" value="true" />
+      <created>1732377849791</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1732377849791</updated>
+    </task>
+    <task id="LOCAL-00021" summary="fixed search">
+      <option name="closed" value="true" />
+      <created>1732377856353</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1732377856353</updated>
+    </task>
+    <task id="LOCAL-00022" summary="cleaned up sidebar code">
+      <option name="closed" value="true" />
+      <created>1732380704470</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1732380704470</updated>
+    </task>
+    <task id="LOCAL-00023" summary="moved search function to side bar">
+      <option name="closed" value="true" />
+      <created>1732382178996</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1732382178996</updated>
+    </task>
+    <task id="LOCAL-00024" summary="fixed gap issue in layout of sides and meals">
+      <option name="closed" value="true" />
+      <created>1732382362226</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1732382362226</updated>
+    </task>
+    <task id="LOCAL-00025" summary="overflow issue fixed (again)">
+      <option name="closed" value="true" />
+      <created>1732525931840</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1732525931840</updated>
+    </task>
+    <task id="LOCAL-00026" summary="updated favicon">
+      <option name="closed" value="true" />
+      <created>1732527562361</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1732527562361</updated>
+    </task>
+    <task id="LOCAL-00027" summary="fixed overflow in seasonal ingredients">
+      <option name="closed" value="true" />
+      <created>1732529752375</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1732529752375</updated>
+    </task>
+    <task id="LOCAL-00028" summary="tightened layout">
+      <option name="closed" value="true" />
+      <created>1732541564522</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1732541564522</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -215,8 +330,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="mobile view with dropdown items" />
-    <MESSAGE value="Improved data table view on desktop" />
     <MESSAGE value="sign in button on mobile more visible" />
     <MESSAGE value="Improved mobile sign in UX" />
     <MESSAGE value="fixed mobile data table issue" />
@@ -227,8 +340,21 @@
     <MESSAGE value="debug4" />
     <MESSAGE value="remove debug elements" />
     <MESSAGE value="removed overflow inside rows" />
-    <MESSAGE value="fixed overflow issue" />
     <MESSAGE value="fixed visibility error for search bar" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed visibility error for search bar" />
+    <MESSAGE value="added seasonal calendar" />
+    <MESSAGE value="added unversioned files" />
+    <MESSAGE value="updated api endpoint for id" />
+    <MESSAGE value="fixed overflow issue" />
+    <MESSAGE value="fixed width overflow issue in seasons" />
+    <MESSAGE value="fixed search functionality" />
+    <MESSAGE value="fixed search" />
+    <MESSAGE value="cleaned up sidebar code" />
+    <MESSAGE value="moved search function to side bar" />
+    <MESSAGE value="fixed gap issue in layout of sides and meals" />
+    <MESSAGE value="overflow issue fixed (again)" />
+    <MESSAGE value="updated favicon" />
+    <MESSAGE value="fixed overflow in seasonal ingredients" />
+    <MESSAGE value="tightened layout" />
+    <option name="LAST_COMMIT_MESSAGE" value="tightened layout" />
   </component>
 </project>

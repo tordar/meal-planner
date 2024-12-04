@@ -27,6 +27,12 @@ export function DataForm({ fields, values, onChange, onSubmit, submitLabel }: Da
         onSubmit();
     };
 
+    const handleTextareaChange = (name: string, value: string) => {
+        // Preserve newlines by replacing them with '\n'
+        const preservedValue = value.replace(/\r\n/g, '\n');
+        onChange(name, preservedValue);
+    };
+
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             {fields.map((field) => (
@@ -49,7 +55,7 @@ export function DataForm({ fields, values, onChange, onSubmit, submitLabel }: Da
                             id={field.name}
                             name={field.name}
                             value={values[field.name] as string || ''}
-                            onChange={(e) => onChange(field.name, e.target.value)}
+                            onChange={(e) => handleTextareaChange(field.name, e.target.value)}
                             required={field.required}
                         />
                     )}
