@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d4efc041-f57a-43d2-9686-e4f80f2a4f94" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="d4efc041-f57a-43d2-9686-e4f80f2a4f94" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,6 +45,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -97,6 +96,7 @@
       <workItem from="1731583795467" duration="642000" />
       <workItem from="1732184230850" duration="31471000" />
       <workItem from="1732614176814" duration="1328000" />
+      <workItem from="1733318816254" duration="241000" />
     </task>
     <task id="LOCAL-00001" summary="mobile view with dropdown items">
       <option name="closed" value="true" />
@@ -322,7 +322,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732541564522</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="handle line breaks in description">
+      <option name="closed" value="true" />
+      <created>1733319052023</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1733319052023</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -330,7 +338,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="sign in button on mobile more visible" />
     <MESSAGE value="Improved mobile sign in UX" />
     <MESSAGE value="fixed mobile data table issue" />
     <MESSAGE value="action buttons missing in prod" />
@@ -355,6 +362,7 @@
     <MESSAGE value="updated favicon" />
     <MESSAGE value="fixed overflow in seasonal ingredients" />
     <MESSAGE value="tightened layout" />
-    <option name="LAST_COMMIT_MESSAGE" value="tightened layout" />
+    <MESSAGE value="handle line breaks in description" />
+    <option name="LAST_COMMIT_MESSAGE" value="handle line breaks in description" />
   </component>
 </project>

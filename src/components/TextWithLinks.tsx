@@ -11,7 +11,7 @@ export function TextWithLinks({ text }: TextWithLinksProps) {
     const parts = text.split(urlRegex);
 
     return (
-        <span className="inline">
+        <span className="inline whitespace-pre-wrap">
       {parts.map((part, index) => {
           if (part.match(urlRegex)) {
               return (
