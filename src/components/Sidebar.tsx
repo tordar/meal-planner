@@ -1,19 +1,21 @@
 'use client'
 
 import React from 'react'
-import { Utensils, Book, Coffee, Calendar, Menu, Search } from 'lucide-react'
+import { Utensils, Book, Coffee, Calendar, Search, Menu } from 'lucide-react'
 import { SignInButton } from '@/components/SignInButton'
 import { NavItem } from '@/components/NavItem'
 import { Input } from "@/components/ui/input"
 import { useSearch } from '@/contexts/SearchContext'
-import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
+import {
+    Sidebar as ShadcnSidebar,
+    SidebarContent,
+    SidebarHeader,
+    SidebarFooter,
+    SidebarTrigger,
+    SidebarMenu,
+    SidebarMenuItem,
+} from "@/components/ui/sidebar"
 
 interface SidebarProps {
     isMobile?: boolean;
@@ -38,46 +40,55 @@ export function Sidebar({ isMobile = false }: SidebarProps) {
     )
 
     const navigation = (
-        <nav className="flex-grow py-4">
-            <NavItem href="/" icon={<Utensils size={20}/>} label="Meals"/>
-            <NavItem href="/sides" icon={<Book size={20}/>} label="Sides"/>
-            <NavItem href="/ideas" icon={<Coffee size={20}/>} label="Ideas"/>
-            <NavItem href="/seasonal-calendar" icon={<Calendar size={20}/>} label="Seasonal Calendar"/>
-        </nav>
+        <SidebarMenu>
+            <SidebarMenuItem>
+                <NavItem href="/" icon={<Utensils size={20}/>} label="Meals"/>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+                <NavItem href="/sides" icon={<Book size={20}/>} label="Sides"/>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+                <NavItem href="/ideas" icon={<Coffee size={20}/>} label="Ideas"/>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+                <NavItem href="/seasonal-calendar" icon={<Calendar size={20}/>} label="Seasonal Calendar"/>
+            </SidebarMenuItem>
+        </SidebarMenu>
+    )
+
+    const sidebarContent = (
+        <>
+            <SidebarHeader className="p-4 border-b">
+                <span className="text-xl font-semibold">Meal Planner</span>
+            </SidebarHeader>
+            <SidebarContent>
+                {searchBar}
+                {navigation}
+            </SidebarContent>
+            <SidebarFooter className="p-4 border-t">
+                <SignInButton />
+            </SidebarFooter>
+        </>
     )
 
     if (isMobile) {
         return (
-            <Sheet>
-                <SheetTrigger asChild>
+            <>
+                <SidebarTrigger>
                     <Button variant="ghost" size="icon" aria-label="Open menu">
                         <Menu className="h-6 w-6"/>
                     </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="w-64 p-0">
-                    <SheetHeader className="p-4 border-b">
-                        <SheetTitle>Meal Planner</SheetTitle>
-                    </SheetHeader>
-                    {searchBar}
-                    {navigation}
-                    <div className="p-4 border-t">
-                        <SignInButton/>
-                    </div>
-                </SheetContent>
-            </Sheet>
+                </SidebarTrigger>
+                <ShadcnSidebar className="w-64">
+                    {sidebarContent}
+                </ShadcnSidebar>
+            </>
         )
     }
 
     return (
-        <aside className="hidden md:flex w-64 bg-gray-100 shadow-md flex-col">
-            <div className="p-4 border-b">
-                <span className="text-xl font-semibold">Meal Planner</span>
-            </div>
-            {searchBar}
-            {navigation}
-            <div className="p-4 border-t">
-                <SignInButton/>
-            </div>
-        </aside>
+        <ShadcnSidebar className="hidden md:flex w-64 border-r shrink-0 h-screen">
+            {sidebarContent}
+        </ShadcnSidebar>
     )
 }

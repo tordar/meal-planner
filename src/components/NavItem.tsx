@@ -32,9 +32,9 @@ export function NavItem({ href, icon, label, className = '' }: NavItemProps) {
                 className
             )}
         >
-            <span className="inline-flex items-center justify-center w-5 h-5">
-                {icon}
-            </span>
+      <span className="inline-flex items-center justify-center w-5 h-5">
+        {icon}
+      </span>
             <span>{label}</span>
         </Link>
     )

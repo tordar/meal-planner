@@ -57,25 +57,26 @@ export default function MealTracker() {
 
   if (authStatus === "unauthenticated") {
     return (
-        <div className="flex items-center justify-center h-full">
+        <div className="flex items-center justify-center min-h-screen w-full">
           <div className="text-center">
             <h1 className="text-2xl font-bold mb-4">Welcome to Food Planner</h1>
             <p className="mb-4">Please sign in to access your meals.</p>
             <SignInButton />
           </div>
         </div>
-    )
+    );
   }
 
   if (isLoading) {
     return (
-        <div className="flex items-center justify-center h-full">
+        <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <p className="text-xl">Loading meals...</p>
           </div>
         </div>
-    )
+    );
   }
+
 
   const filteredMeals = meals.filter(meal =>
       Object.values(meal).some(value =>

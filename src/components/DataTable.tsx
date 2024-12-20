@@ -8,7 +8,7 @@ import { TextWithLinks } from './TextWithLinks'
 interface Column<T> {
     key: keyof T;
     header: string;
-    width: string;
+    width?: string; // Make width optional
     hideOnMobile?: boolean;
 }
 
@@ -50,46 +50,65 @@ export function DataTable<T extends { _id: string }>({
         return content as React.ReactNode;
     };
 
+    // Calculate default widths based on content type
+    const getColumnWidth = (column: Column<T>) => {
+        if (column.width) return column.width;
+
+        switch (column.key) {
+            case 'name':
+                return 'w-[25%]';
+            case 'description':
+            case 'recipe':
+                return 'w-[30%]';
+            case 'notes':
+                return 'w-[15%]';
+            default:
+                return 'w-[200px]';
+        }
+    };
+
     return (
-        <div className="w-full overflow-x-auto">
-            <Table className="w-full">
+        <div className="w-full">
+            <Table className="w-full table-fixed">
                 <TableHeader>
                     <TableRow>
                         {columns.map((column) => (
                             <TableHead
                                 key={column.key as string}
-                                className={`${column.hideOnMobile ? 'hidden md:table-cell' : ''} ${column.width}`}
+                                className={`${column.hideOnMobile ? 'hidden md:table-cell' : ''} ${getColumnWidth(column)}`}
                             >
                                 {column.header}
                             </TableHead>
                         ))}
-                        <TableHead className="w-20 md:w-24">Actions</TableHead>
+                        <TableHead className="w-[60px] md:w-[80px]">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {data && data.length > 0 ? (
                         data.map((item) => (
                             <React.Fragment key={item._id}>
-                                <TableRow>
+                                <TableRow className="group">
                                     {columns.map((column) => (
                                         <TableCell
                                             key={`${item._id}-${column.key as string}`}
                                             className={`${
                                                 column.hideOnMobile ? 'hidden md:table-cell' : ''
-                                            } ${column.key === 'name' ? 'pr-20' : ''} ${column.width}`}
+                                            } ${getColumnWidth(column)}`}
                                         >
-                                            <div className={`${column.key === 'name' ? 'font-medium' : ''} whitespace-normal break-words`}>
+                                            <div className={`${
+                                                column.key === 'name' ? 'font-medium' : ''
+                                            } whitespace-normal break-words max-w-full`}>
                                                 {renderCellContent(item, column)}
                                             </div>
                                         </TableCell>
                                     ))}
-                                    <TableCell className="w-20 md:w-24">
-                                        <div className="flex items-center justify-end space-x-2">
+                                    <TableCell className="w-[60px] md:w-[80px]">
+                                        <div className="flex items-center justify-end gap-1">
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
                                                 onClick={() => toggleRowExpansion(item._id)}
-                                                className="md:hidden"
+                                                className="md:hidden h-8 w-8"
                                             >
                                                 {expandedRows.has(item._id) ? (
                                                     <ChevronUp className="h-4 w-4" />
@@ -99,7 +118,7 @@ export function DataTable<T extends { _id: string }>({
                                             </Button>
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" size="icon">
+                                                    <Button variant="ghost" size="icon" className="h-8 w-8">
                                                         <MoreHorizontal className="h-4 w-4" />
                                                         <span className="sr-only">Open menu</span>
                                                     </Button>
@@ -122,7 +141,8 @@ export function DataTable<T extends { _id: string }>({
                                             <div className="py-2 space-y-2">
                                                 {columns.filter(column => column.hideOnMobile).map((column) => (
                                                     <div key={column.key as string}>
-                                                        <strong>{column.header}:</strong> {renderCellContent(item, column)}
+                                                        <strong>{column.header}:</strong>{' '}
+                                                        {renderCellContent(item, column)}
                                                     </div>
                                                 ))}
                                             </div>
