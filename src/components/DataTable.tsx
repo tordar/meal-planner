@@ -8,7 +8,7 @@ import { TextWithLinks } from './TextWithLinks'
 interface Column<T> {
     key: keyof T;
     header: string;
-    width?: string; // Make width optional
+    width?: string;
     hideOnMobile?: boolean;
 }
 
@@ -20,11 +20,11 @@ interface DataTableProps<T> {
 }
 
 export function DataTable<T extends { _id: string }>({
-                                                         data,
-                                                         columns,
-                                                         onEdit,
-                                                         onDelete
-                                                     }: DataTableProps<T>) {
+                                                                 data,
+                                                                 columns,
+                                                                 onEdit,
+                                                                 onDelete
+                                                             }: DataTableProps<T>) {
     const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
 
     const toggleRowExpansion = (id: string) => {
@@ -50,26 +50,14 @@ export function DataTable<T extends { _id: string }>({
         return content as React.ReactNode;
     };
 
-    // Calculate default widths based on content type
     const getColumnWidth = (column: Column<T>) => {
         if (column.width) return column.width;
-
-        switch (column.key) {
-            case 'name':
-                return 'w-[25%]';
-            case 'description':
-            case 'recipe':
-                return 'w-[30%]';
-            case 'notes':
-                return 'w-[15%]';
-            default:
-                return 'w-[200px]';
-        }
+        return 'w-auto';
     };
 
     return (
         <div className="w-full">
-            <Table className="w-full table-fixed">
+            <Table>
                 <TableHeader>
                     <TableRow>
                         {columns.map((column) => (
@@ -80,29 +68,25 @@ export function DataTable<T extends { _id: string }>({
                                 {column.header}
                             </TableHead>
                         ))}
-                        <TableHead className="w-[60px] md:w-[80px]">Actions</TableHead>
+                        <TableHead className="w-[80px]">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {data && data.length > 0 ? (
                         data.map((item) => (
                             <React.Fragment key={item._id}>
-                                <TableRow className="group">
+                                <TableRow>
                                     {columns.map((column) => (
                                         <TableCell
                                             key={`${item._id}-${column.key as string}`}
-                                            className={`${
-                                                column.hideOnMobile ? 'hidden md:table-cell' : ''
-                                            } ${getColumnWidth(column)}`}
+                                            className={`${column.hideOnMobile ? 'hidden md:table-cell' : ''}`}
                                         >
-                                            <div className={`${
-                                                column.key === 'name' ? 'font-medium' : ''
-                                            } whitespace-normal break-words max-w-full`}>
+                                            <div className={`${column.key === 'name' ? 'font-medium' : ''} whitespace-normal break-words`}>
                                                 {renderCellContent(item, column)}
                                             </div>
                                         </TableCell>
                                     ))}
-                                    <TableCell className="w-[60px] md:w-[80px]">
+                                    <TableCell>
                                         <div className="flex items-center justify-end gap-1">
                                             <Button
                                                 variant="ghost"
@@ -138,11 +122,15 @@ export function DataTable<T extends { _id: string }>({
                                 {expandedRows.has(item._id) && (
                                     <TableRow className="md:hidden">
                                         <TableCell colSpan={columns.length + 1}>
-                                            <div className="py-2 space-y-2">
+                                            <div className="py-4 space-y-4">
                                                 {columns.filter(column => column.hideOnMobile).map((column) => (
                                                     <div key={column.key as string}>
-                                                        <strong>{column.header}:</strong>{' '}
-                                                        {renderCellContent(item, column)}
+                                                        <div className="font-medium text-sm text-muted-foreground mb-1">
+                                                            {column.header}
+                                                        </div>
+                                                        <div className="text-sm">
+                                                            {renderCellContent(item, column)}
+                                                        </div>
                                                     </div>
                                                 ))}
                                             </div>

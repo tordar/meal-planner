@@ -87,7 +87,7 @@ export function Sidebar({ isMobile = false }: SidebarProps) {
     }
 
     return (
-        <ShadcnSidebar className="hidden md:flex w-64 border-r shrink-0 h-screen">
+        <ShadcnSidebar className="hidden md:flex w-64 border-r shrink-0 h-full">
             {sidebarContent}
         </ShadcnSidebar>
     )
