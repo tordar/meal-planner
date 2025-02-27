@@ -29,10 +29,10 @@ const mealFields = [
 ]
 
 const mealColumns: Array<{key: keyof Meal; header: string; width: string; hideOnMobile: boolean}> = [
-  { key: 'name', header: 'Name', width: 'auto', hideOnMobile: false },
+  { key: 'name', header: 'Name', width: '20%', hideOnMobile: false },
   { key: 'description', header: 'Description', width: '25%', hideOnMobile: true },
   { key: 'notes', header: 'Notes', width: '25%', hideOnMobile: true },
-  { key: 'recipe', header: 'Recipe', width: '25%', hideOnMobile: true }
+  { key: 'recipe', header: 'Recipe', width: '30%', hideOnMobile: true }
 ]
 
 export default function MealTracker() {

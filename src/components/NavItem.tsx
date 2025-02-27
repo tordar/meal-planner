@@ -4,6 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from "@/lib/utils"
+import { useSidebar } from '@/components/ui/sidebar'
 
 interface NavItemProps {
     href: string;
@@ -15,10 +16,19 @@ interface NavItemProps {
 export function NavItem({ href, icon, label, className = '' }: NavItemProps) {
     const pathname = usePathname()
     const isActive = pathname === href
+    const { isMobile, setOpenMobile } = useSidebar()
+
+    const handleClick = () => {
+        // Close the mobile sidebar when a navigation link is clicked
+        if (isMobile) {
+            setOpenMobile(false)
+        }
+    }
 
     return (
         <Link
             href={href}
+            onClick={handleClick}
             className={cn(
                 "flex items-center h-10 w-full gap-3 px-4 text-sm font-medium transition-all",
                 "hover:bg-white/50",
