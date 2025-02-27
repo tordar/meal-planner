@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, ChevronDown, ChevronUp } from 'lucide-react'
+import { MoreHorizontal, ChevronDown, ChevronUp, Search, X } from 'lucide-react'
 import { TextWithLinks } from './TextWithLinks'
 import { useSearch } from '@/contexts/SearchContext'
+import { Input } from "@/components/ui/input"
 
 interface Column<T> {
     key: keyof T;
@@ -27,7 +28,7 @@ export function DataTable<T extends { _id: string }>({
                                                                  onDelete
                                                              }: DataTableProps<T>) {
     const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
-    const { searchTerm } = useSearch();
+    const { searchTerm, setSearchTerm } = useSearch();
 
     // Reset expanded rows when data changes (e.g., when navigating to a different route)
     // or when search term changes
@@ -73,6 +74,10 @@ export function DataTable<T extends { _id: string }>({
             return {};
         }
         return {};
+    };
+
+    const clearSearch = () => {
+        setSearchTerm('');
     };
 
     const nameColumn = columns.find(col => col.key === 'name');
@@ -146,6 +151,29 @@ export function DataTable<T extends { _id: string }>({
 
             {/* Mobile Table - Hidden on Desktop */}
             <div className="md:hidden">
+                {/* Mobile Search Bar */}
+                <div className="mb-4 px-1">
+                    <div className="relative">
+                        <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+                        <Input
+                            type="search"
+                            placeholder="Search..."
+                            className="w-full pl-8 pr-8 bg-white"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        {searchTerm && (
+                            <button 
+                                onClick={clearSearch}
+                                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                aria-label="Clear search"
+                            >
+                                <X className="h-4 w-4" />
+                            </button>
+                        )}
+                    </div>
+                </div>
+
                 <Table className="table-fixed">
                     <TableHeader>
                         <TableRow>
@@ -221,7 +249,7 @@ export function DataTable<T extends { _id: string }>({
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={2} className="text-center py-4">
-                                    No data available
+                                    {searchTerm ? 'No matching results' : 'No data available'}
                                 </TableCell>
                             </TableRow>
                         )}

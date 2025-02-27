@@ -56,7 +56,22 @@ export function Sidebar({ isMobile = false }: SidebarProps) {
         </SidebarMenu>
     )
 
-    const sidebarContent = (
+    const mobileSidebarContent = (
+        <>
+            <SidebarHeader className="p-4 border-b">
+                <span className="text-xl font-semibold">Meal Planner</span>
+            </SidebarHeader>
+            <SidebarContent>
+                {/* No search bar in mobile sidebar */}
+                {navigation}
+            </SidebarContent>
+            <SidebarFooter className="p-4 border-t">
+                <SignInButton />
+            </SidebarFooter>
+        </>
+    )
+
+    const desktopSidebarContent = (
         <>
             <SidebarHeader className="p-4 border-b">
                 <span className="text-xl font-semibold">Meal Planner</span>
@@ -80,7 +95,7 @@ export function Sidebar({ isMobile = false }: SidebarProps) {
                     </Button>
                 </SidebarTrigger>
                 <ShadcnSidebar className="w-64">
-                    {sidebarContent}
+                    {mobileSidebarContent}
                 </ShadcnSidebar>
             </>
         )
@@ -88,7 +103,7 @@ export function Sidebar({ isMobile = false }: SidebarProps) {
 
     return (
         <ShadcnSidebar className="hidden md:flex w-64 border-r shrink-0 h-full">
-            {sidebarContent}
+            {desktopSidebarContent}
         </ShadcnSidebar>
     )
 }
