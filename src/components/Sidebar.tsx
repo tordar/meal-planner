@@ -12,7 +12,6 @@ import {
     SidebarContent,
     SidebarHeader,
     SidebarFooter,
-    SidebarTrigger,
     SidebarMenu,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
