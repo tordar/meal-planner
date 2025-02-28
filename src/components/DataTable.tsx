@@ -187,18 +187,30 @@ export function DataTable<T extends { _id: string }>({
                         {data && data.length > 0 ? (
                             data.map((item) => (
                                 <React.Fragment key={item._id}>
-                                    <TableRow>
+                                    <TableRow 
+                                        className="cursor-pointer"
+                                        onClick={(e) => {
+                                            // Prevent row click if clicking on the action buttons
+                                            if ((e.target as HTMLElement).closest('.action-buttons')) {
+                                                return;
+                                            }
+                                            toggleRowExpansion(item._id);
+                                        }}
+                                    >
                                         <TableCell className="w-[80%]">
                                             <div className="font-medium whitespace-normal break-words overflow-hidden">
                                                 {nameColumn ? renderCellContent(item, nameColumn) : item._id}
                                             </div>
                                         </TableCell>
                                         <TableCell className="w-[20%] text-right">
-                                            <div className="flex items-center justify-end gap-1">
+                                            <div className="flex items-center justify-end gap-1 action-buttons">
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
-                                                    onClick={() => toggleRowExpansion(item._id)}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation(); // Prevent row click event
+                                                        toggleRowExpansion(item._id);
+                                                    }}
                                                     className="h-8 w-8"
                                                 >
                                                     {expandedRows.has(item._id) ? (
@@ -209,7 +221,12 @@ export function DataTable<T extends { _id: string }>({
                                                 </Button>
                                                 <DropdownMenu>
                                                     <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                                                        <Button 
+                                                            variant="ghost" 
+                                                            size="icon" 
+                                                            className="h-8 w-8"
+                                                            onClick={(e) => e.stopPropagation()} // Prevent row click event
+                                                        >
                                                             <MoreHorizontal className="h-4 w-4" />
                                                             <span className="sr-only">Open menu</span>
                                                         </Button>
