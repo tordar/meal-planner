@@ -7,10 +7,11 @@ import { DataTable } from "@/components/DataTable"
 import { DataForm } from "@/components/DataForm"
 import { useDataManager } from "@/hooks/useDataManager"
 import { CSVImport } from "@/components/CsvImport"
-import { SignInButton } from '@/components/SignInButton'
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle } from 'lucide-react'
 import { useSearch } from '@/contexts/SearchContext'
+import { AuthenticationRequired } from '@/components/AuthenticationRequired'
+import { LoadingState } from '@/components/LoadingState'
 
 interface Meal {
   _id: string;
@@ -57,26 +58,16 @@ export default function MealTracker() {
 
   if (authStatus === "unauthenticated") {
     return (
-        <div className="flex items-center justify-center min-h-screen w-full">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Welcome to Food Planner</h1>
-            <p className="mb-4">Please sign in to access your meals.</p>
-            <SignInButton />
-          </div>
-        </div>
+      <AuthenticationRequired 
+        title="Welcome to Food Planner"
+        description="Please sign in to access your meals."
+      />
     );
   }
 
   if (isLoading) {
-    return (
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="text-center">
-            <p className="text-xl">Loading meals...</p>
-          </div>
-        </div>
-    );
+    return <LoadingState message="Loading meals..." />;
   }
-
 
   const filteredMeals = meals.filter(meal =>
       Object.values(meal).some(value =>
