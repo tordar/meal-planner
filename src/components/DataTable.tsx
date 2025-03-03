@@ -149,10 +149,11 @@ export function DataTable<T extends { _id: string }>({
                 </Table>
             </div>
 
+
             {/* Mobile Table - Hidden on Desktop */}
             <div className="md:hidden">
                 {/* Mobile Search Bar */}
-                <div className="mb-4 px-1">
+                <div className="mt-4 mb-4 px-1">
                     <div className="relative">
                         <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
                         <Input
